@@ -6,7 +6,7 @@ from werkzeug.exceptions import Forbidden, Unauthorized
 from odoo import _, http
 from odoo.http import request
 
-from odoo.addons.web.controllers.main import Home
+from odoo.addons.web.controllers.home import Home
 
 _logger = logging.getLogger(__name__)
 
@@ -34,25 +34,12 @@ class ServiceProviderBaseContorller(http.Controller):
             else:
                 context["error"] = "Invalid Credentials"
 
-        providers = (
-            request.env["auth.oauth.provider"]
-            .sudo()
-            .get_portal_auth_providers(
-                domain=(("g2p_service_provider_allowed", "=", True),),
-                redirect=redirect_uri,
-                base_url=request.httprequest.url_root.rstrip("/"),
-                db_name=request.session.db,
-            )
-            or []
-        )
-
-        context.update(dict(providers=providers))
         return request.render("g2p_service_provider_portal_base.login_page", qcontext=context)
 
     @http.route(["/serviceprovider/home"], type="http", auth="user", website=True)
     def portal_home(self, **kwargs):
         self.check_roles("SERVICEPROVIDER")
-        return request.redirect("/serviceprovider/dashboard")
+        return request.render("g2p_service_provider_portal_base.home_page")
 
     @http.route(["/serviceprovider/myprofile"], type="http", auth="public", website=True)
     def portal_profile(self, **kwargs):
@@ -67,11 +54,11 @@ class ServiceProviderBaseContorller(http.Controller):
 
     @http.route(["/serviceprovider/aboutus"], type="http", auth="public", website=True)
     def portal_about_us(self, **kwargs):
-        return request.render("g2p_service_provider_portal_base.aboutus_page")
+        return request.render("g2p_service_provider_portal_base.about_us_page")
 
     @http.route(["/serviceprovider/contactus"], type="http", auth="public", website=True)
     def portal_contact_us(self, **kwargs):
-        return request.render("g2p_service_provider_portal_base.contact_us")
+        return request.render("g2p_service_provider_portal_base.contact_us_page")
 
     @http.route(["/serviceprovider/otherpage"], type="http", auth="public", website=True)
     def portal_other_page(self, **kwargs):
