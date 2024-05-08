@@ -36,10 +36,12 @@ class ServiceProviderBaseContorller(http.Controller):
 
         return request.render("g2p_service_provider_portal_base.login_page", qcontext=context)
 
+    # TODO: Extend this controller
     @http.route(["/serviceprovider/home"], type="http", auth="user", website=True)
     def portal_home(self, **kwargs):
         self.check_roles("SERVICEPROVIDER")
-        return request.render("g2p_service_provider_portal_base.home_page")
+        return request.redirect("/serviceprovider/group")
+        # return request.render("g2p_service_provider_portal_base.home_page")
 
     @http.route(["/serviceprovider/myprofile"], type="http", auth="public", website=True)
     def portal_profile(self, **kwargs):
