@@ -11,13 +11,19 @@
     "data": [
         "views/about_us.xml",
         "views/base.xml",
-        "views/contact_us.xml",
         "views/home.xml",
+        "views/contact_us.xml",
         "views/login.xml",
         "views/profile.xml",
         "views/other.xml",
     ],
-    "assets": {},
+    "assets": {
+        "web.assets_frontend": [
+            # 'g2p_service_provider_portal_base/static/src/css/portal.css',
+        ],
+        "web.assets_common": [],
+        "website.assets_wysiwyg": [],
+    },
     "demo": [],
     "images": [],
     "application": True,

@@ -1,0 +1,779 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <!-- #list View -->
+    <template id="individual_list" name="G2P Service Provider Portal individual">
+        <t t-call="g2p_service_provider_portal_base.base">
+            <t t-set="title">List of members | Service Provider Portal</t>
+            <div class="main-container">
+                <div class="container-adjuster">
+                    <h5 class="all-title">Add New Member</h5>
+                    <div class="form-template">
+                        <ol class="breadcrumb  breadcrumb-list bg-transparent">
+                            <li class="breadcrumb-item">
+                                <a t-attf-href="/serviceprovider/home">Dashboard</a>
+                            </li>
+                            <li class="breadcrumb-item">
+                                <a t-attf-href="/serviceprovider/group/update/{{ group.id }}">
+                                    Household</a>
+                            </li>
+                            <li class="breadcrumb-item active" aria-current="page">Add New Member</li>
+                        </ol>
+                        <form
+                            id="individualForm"
+                            action="/serviceprovider/individual/create/submit"
+                            method="POST"
+                            enctype="multipart/form-data"
+                        >
+                            <input type="hidden" name="id" t-att-value="group.id" />
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="card container-left" style="width: auto; padding: 0px;">
+                                        <div
+                                            class="card-header form-card-header"
+                                            style="padding: 0px;"
+                                            id="household_header"
+                                        >
+                                            <div class="row">
+                                                <div class="col-md-8">
+                                                    <h5 class="mb-0 form-heading">Member
+                                                        Details</h5>
+                                                </div>
+                                                <div class="col-md-4 text-end">
+                                                    <i class="fa fa-fw fa-angle-up up-angle" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card-body" style="padding: 0px;">
+                                            <div class="s_website_form_rows">
+                                                <!-- Demographic fields -->
+                                                <div class="row">
+                                                    <div class="col-lg-4">
+                                                        <div class="s_website_form_field">
+                                                            <label
+                                                                class="s_website_form_label"
+                                                                for="given_name"
+                                                            >
+                                                                <span
+                                                                    class="s_website_form_label_content"
+                                                                    style="color: #666666;"
+                                                                >First
+                                                                    Name</span>
+                                                                <span class="s_website_form_mark"> *</span>
+                                                            </label>
+                                                            <input
+                                                                type="text"
+                                                                id="name"
+                                                                name="given_name"
+                                                                class="form-control"
+                                                                required="required"
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <div class="s_website_form_field">
+                                                            <label
+                                                                class="s_website_form_label"
+                                                                for="addl_name"
+                                                            >
+                                                                <span
+                                                                    class="s_website_form_label_content"
+                                                                    style="color: #666666;"
+                                                                >Middle
+                                                                    Name</span>
+                                                                <span class="s_website_form_mark"> *</span>
+                                                            </label>
+                                                            <input
+                                                                type="text"
+                                                                id="addl_name"
+                                                                name="addl_name"
+                                                                class="form-control"
+                                                                required="required"
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <div class="s_website_form_field">
+                                                            <label
+                                                                class="s_website_form_label"
+                                                                for="family_name"
+                                                            >
+                                                                <span
+                                                                    class="s_website_form_label_content"
+                                                                    style="color: #666666;"
+                                                                >Last
+                                                                    Name</span>
+                                                                <span class="s_website_form_mark"> *</span>
+                                                            </label>
+                                                            <input
+                                                                type="text"
+                                                                id="family_name"
+                                                                name="family_name"
+                                                                class="form-control"
+                                                                required="required"
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row input-fields">
+                                                    <div class="col-lg-4">
+                                                        <div class="s_website_form_field">
+                                                            <label class="s_website_form_label" for="phone">
+                                                                <span
+                                                                    class="s_website_form_label_content"
+                                                                    style="color: #666666;"
+                                                                >Mobile
+                                                                    Number</span>
+                                                            </label>
+                                                            <input
+                                                                type="text"
+                                                                id="phone"
+                                                                name="phone"
+                                                                class="form-control"
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <div class="s_website_form_field">
+                                                            <label class="s_website_form_label mb-3">
+                                                                <span class="s_website_form_label_content">
+                                                                    Sex</span>
+                                                            </label>
+                                                            <div class="row">
+                                                                <div class="col">
+                                                                    <t t-foreach="gender" t-as="option">
+                                                                        <div
+                                                                            class="form-check form-check-inline"
+                                                                        >
+                                                                            <input
+                                                                                class="form-check-input"
+                                                                                type="radio"
+                                                                                name="gender"
+                                                                                t-att-value="option.value"
+                                                                            />
+                                                                            <label
+                                                                                class="form-check-label ms-2"
+                                                                                t-out="option.code"
+                                                                                style="color: #666666;"
+                                                                            />
+                                                                        </div>
+                                                                    </t>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <div class="s_website_form_field">
+                                                            <label
+                                                                class="s_website_form_label"
+                                                                for="relation"
+                                                            >
+                                                                <span
+                                                                    class="s_website_form_label_content"
+                                                                    style="color: #666666;"
+                                                                >Relationship
+                                                                    with household head</span>
+                                                                <span class="s_website_form_mark"> *</span>
+                                                            </label>
+                                                            <select
+                                                                id="relation"
+                                                                name="relationship"
+                                                                class="form-control"
+                                                                required="required"
+                                                            >
+                                                                <option>select</option>
+                                                                <option
+                                                                    value="Household head"
+                                                                >Household head</option>
+                                                                <option value="Spouse">Spouse</option>
+                                                                <option
+                                                                    value="Member/dependent"
+                                                                >Member/dependent</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- Submit Button -->
+                                            <div
+                                                class="card-footer"
+                                                style="padding: 20px; text-align: right;"
+                                            >
+                                                <button
+                                                    type="button"
+                                                    class="btn btn-outline-primary"
+                                                    onclick="location.href = '/selfservice/home';"
+                                                >
+                                                    Cancel
+                                                </button>
+                                                <button
+                                                    id="beneficiary_submit"
+                                                    type="submit"
+                                                    class="btn btn-primary"
+                                                >
+                                                    Submit
+                                                </button>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        <br />
+                        <br />
+                        <div class="table-container">
+                            <div class="table-head-container">
+                                <p class="table-title">Member List</p>
+
+                                <form class="form-inline my-2 my-lg-0">
+                                    <div class="search-box">
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            width="13.6"
+                                            height="13.6"
+                                            fill="currentColor"
+                                            class="bi bi-search search-icon"
+                                            viewBox="0 0 16 16"
+                                        >
+                                            <path
+                                                d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"
+                                            />
+                                        </svg>
+                                        <input
+                                            placeholder="Search by / Beneficiary"
+                                            class="search-text"
+                                            name="q"
+                                            id="search-text"
+                                        />
+                                        <span id="search-text-clear">
+                                            <i class="fa fa-times" />
+                                        </span>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="tables-values-container">
+                                <table id="newreimbursements">
+                                    <thead>
+                                        <tr>
+                                            <th>Sr.No.</th>
+                                            <th>Member Name <i class="fa fa-sort" /></th>
+                                            <th>Age <i class="fa fa-sort" /></th>
+                                            <th>Sex <i class="fa fa-sort" /></th>
+                                            <th>Relationship</th>
+                                            <th>Status <i class="fa fa-sort" /></th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <t t-foreach="individuals" t-as="individual">
+                                            <!-- <t t-foreach="group.related_1_ids" t-as="relation"> -->
+                                            <tr>
+                                                <td>
+                                                </td>
+                                                <td
+                                                    style="color:#704880; font: normal normal 600 13px/16px Inter;"
+                                                >
+                                                    <t t-out="individual.name" />
+                                                </td>
+                                                <td>
+                                                    <t t-out="group['age']" />
+                                                </td>
+                                                <td>
+                                                    <t t-out="group['gender']" />
+                                                </td>
+                                                <td>
+                                                    <t>GEst</t>
+                                                </td>
+                                                <td>
+                                                    <t t-if="group['active']">
+                                                        <div
+                                                            string="active"
+                                                            class="active-button"
+                                                        >Active</div>
+                                                    </t>
+                                                    <t t-else="">
+                                                        <div
+                                                            string="inactive"
+                                                            class="inactive-button"
+                                                        >Inactive</div>
+                                                    </t>
+                                                </td>
+                                                <td>
+                                                    <a
+                                                        t-attf-href="/serviceprovider/individual/update/?mem={{ individual.id }}&amp;group={{ group.id }}"
+                                                    >
+                                                        <button class="btn btn-icon rounded-0" title="Edit">
+                                                            <i class="fa fa-pencil" />
+                                                        </button>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        <!-- </t> -->
+                                        </t>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div id="page-buttons" class="pagination justify-content-center">
+
+                            </div>
+                            <script
+                                type="text/javascript"
+                                src="/g2p_service_provider_benificiary_management/static/src/js/table_pagination_and_row.js"
+                            />
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- #Update View -->
+    <template id="individual_update_form_template" name="G2P Service Provider individual update request">
+        <t t-call="g2p_service_provider_portal_base.base">
+            <t t-set="title">Individual Update Request | Service Provider Portal</t>
+            <div class="main-container">
+                <div class="container-adjuster">
+                    <div class="form-template">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <nav aria-label="breadcrumb">
+                                    <ol class="breadcrumb form-layout-breadcrumb">
+                                        <li class="breadcrumb-item">
+                                            <a href="/serviceprovider/individual">
+                                                List of individual
+                                            </a>
+                                        </li>
+                                        <li class="breadcrumb-item active" aria-current="page">
+                                            Update Individual
+                                        </li>
+                                    </ol>
+                                </nav>
+                            </div>
+                        </div>
+
+                        <form
+                            id="individualForm"
+                            action="/serviceprovider/individual/update/submit"
+                            method="POST"
+                            enctype="multipart/form-data"
+                        >
+                        <input type="hidden" name="id" t-att-value="beneficiary.id" />
+                        <input type="hidden" name="group" t-att-value="group" />
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="card container-left" style="width: auto; padding: 0px;">
+                                    <div
+                                            class="card-header form-card-header"
+                                            style="padding: 0px;"
+                                            id="household_header"
+                                        >
+                                        <div class="row">
+                                            <div class="col-md-8">
+                                                <h5 class="mb-0 form-heading">Member
+                                                    Details</h5>
+                                            </div>
+                                            <div class="col-md-4 text-end">
+                                                <i class="fa fa-fw fa-angle-up up-angle" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-body" style="padding: 0px;">
+                                        <div class="s_website_form_rows">
+                                            <!-- Demographic fields -->
+                                            <div class="row">
+                                                <div class="col-lg-4">
+                                                    <div class="s_website_form_field">
+                                                        <label class="s_website_form_label" for="given_name">
+                                                            <span
+                                                                    class="s_website_form_label_content"
+                                                                    style="color: #666666;"
+                                                                >First
+                                                                Name</span>
+                                                            <span class="s_website_form_mark"> *</span>
+                                                        </label>
+                                                        <input
+                                                                type="text"
+                                                                id="name"
+                                                                name="given_name"
+                                                                class="form-control"
+                                                                t-att-value="beneficiary.given_name"
+                                                                required="required"
+                                                            />
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-4">
+                                                    <div class="s_website_form_field">
+                                                        <label class="s_website_form_label" for="addl_name">
+                                                            <span
+                                                                    class="s_website_form_label_content"
+                                                                    style="color: #666666;"
+                                                                >Middle
+                                                                Name</span>
+                                                            <span class="s_website_form_mark"> *</span>
+                                                        </label>
+                                                        <input
+                                                                type="text"
+                                                                id="addl_name"
+                                                                name="addl_name"
+                                                                class="form-control"
+                                                                t-att-value="beneficiary.addl_name"
+                                                                required="required"
+                                                            />
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-4">
+                                                    <div class="s_website_form_field">
+                                                        <label class="s_website_form_label" for="family_name">
+                                                            <span
+                                                                    class="s_website_form_label_content"
+                                                                    style="color: #666666;"
+                                                                >Last
+                                                                Name</span>
+                                                            <span class="s_website_form_mark"> *</span>
+                                                        </label>
+                                                        <input
+                                                                type="text"
+                                                                id="family_name"
+                                                                name="family_name"
+                                                                class="form-control"
+                                                                t-att-value="beneficiary.family_name"
+                                                                required="required"
+                                                            />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row input-fields">
+                                                <div class="col-lg-4">
+                                                    <div class="s_website_form_field">
+                                                        <label class="s_website_form_label" for="phone">
+                                                            <span
+                                                                    class="s_website_form_label_content"
+                                                                    style="color: #666666;"
+                                                                >Mobile
+                                                                Number</span>
+                                                        </label>
+                                                        <input
+                                                                type="text"
+                                                                id="phone"
+                                                                name="phone"
+                                                                t-att-value="beneficiary.phone"
+                                                                class="form-control"
+                                                            />
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-4">
+                                                    <div class="s_website_form_field">
+                                                        <label class="s_website_form_label mb-3">
+                                                            <span class="s_website_form_label_content">
+                                                                Sex</span>
+                                                        </label>
+                                                        <div class="row">
+                                                            <div class="col">
+                                                                <t t-foreach="gender" t-as="option">
+                                                                    <div class="form-check form-check-inline">
+                                                                        <input
+                                                                                class="form-check-input"
+                                                                                type="radio"
+                                                                                name="gender"
+                                                                                t-att-checked="option.value == beneficiary.gender"
+                                                                                t-att-value="option.value"
+                                                                            />
+                                                                        <label
+                                                                                class="form-check-label ms-2"
+                                                                                t-out="option.code"
+                                                                                style="color: #666666;"
+                                                                            />
+                                                                    </div>
+                                                                </t>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-4">
+                                                    <div class="s_website_form_field">
+                                                        <label class="s_website_form_label" for="relation">
+                                                            <span
+                                                                    class="s_website_form_label_content"
+                                                                    style="color: #666666;"
+                                                                >Relationship
+                                                                with household head</span>
+                                                            <span class="s_website_form_mark"> *</span>
+                                                        </label>
+                                                        <select
+                                                                id="relation"
+                                                                name="relationship"
+                                                                class="form-control"
+                                                                required="required"
+                                                            >
+                                                            <option>select</option>
+                                                            <option
+                                                                    value="Household head"
+                                                                >Household head</option>
+                                                            <option value="Spouse">Spouse</option>
+                                                            <option
+                                                                    value="Member/dependent"
+                                                                >Member/dependent</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- Submit Button -->
+                                        <div class="card-footer" style="padding: 20px; text-align: right;">
+                                            <button
+                                                    type="button"
+                                                    class="btn btn-outline-primary"
+                                                    onclick="location.href = '/selfservice/home';"
+                                                >
+                                                Cancel
+                                            </button>
+                                            <button
+                                                    id="beneficiary_submit"
+                                                    type="submit"
+                                                    class="btn btn-primary"
+                                                >
+                                                Submit
+                                            </button>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+                        <!-- <script
+                            type="text/javascript"
+                            src="/g2p_service_provider_portal/static/src/js/form_action.js"
+                        ></script> -->
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- #Create View -->
+    <template id="individual_create_form_template" name="G2P Service Provider individual create request">
+        <t t-call="g2p_service_provider_portal_base.base">
+            <t t-set="title">Create Individual | Service Provider Portal</t>
+            <div class="main-container">
+                <div class="container-adjuster">
+                    <div class="form-template">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <nav aria-label="breadcrumb">
+                                    <ol class="breadcrumb form-layout-breadcrumb">
+                                        <li class="breadcrumb-item">
+                                            <a href="/serviceprovider/individual">
+                                                List of members
+                                            </a>
+                                        </li>
+                                        <li class="breadcrumb-item active" aria-current="page">
+                                            Create New
+                                        </li>
+                                    </ol>
+                                </nav>
+                            </div>
+                        </div>
+
+                        <form
+                            id="createForm"
+                            action="/serviceprovider/individual/create/submit"
+                            method="POST"
+                        >
+                            <input type="hidden" name="id" t-att-value="group" />
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div class="card container-left" style="width: auto; padding: 0px;">
+                                        <div class="card-header form-card-header" style="padding: 0px;">
+                                            <div class="row">
+                                                <div class="col-md-8">
+                                                    <h5 class="mb-0 form-heading">Member Details</h5>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card-body" style="padding: 0px;">
+                                            <div class="note">
+                                                <div class="container">
+                                                    <p class="mandatory-fields-note">Fields marked
+                                                        with "<span class="s_website_form_mark">*</span>"
+                                                        are mandatory</p>
+                                                </div>
+                                            </div>
+                                            <!-- Input Fields -->
+                                            <div class="s_website_form_rows">
+                                                <div class="row">
+                                                    <div class="col-lg-6">
+                                                        <div class="s_website_form_field">
+                                                            <label
+                                                                class="s_website_form_label"
+                                                                for="first_name"
+                                                            >
+                                                                <span
+                                                                    class="s_website_form_label_content"
+                                                                    style="color: #666666;"
+                                                                >First
+                                                                    Name</span>
+                                                                <span class="s_website_form_mark"> *</span>
+
+                                                            </label>
+                                                            <input
+                                                                type="text"
+                                                                id="first_name"
+                                                                name="first_name"
+                                                                class="form-control"
+                                                                required="required"
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <div class="s_website_form_field">
+                                                            <label
+                                                                class="s_website_form_label"
+                                                                for="last_name"
+                                                            >
+                                                                <span
+                                                                    class="s_website_form_label_content"
+                                                                    style="color: #666666;"
+                                                                >Last
+                                                                    Name</span>
+                                                                <span class="s_website_form_mark"> *</span>
+
+                                                            </label>
+                                                            <input
+                                                                type="text"
+                                                                id="last_name"
+                                                                name="last_name"
+                                                                class="form-control"
+                                                                required="required"
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-lg-6">
+                                                        <div class="s_website_form_field">
+                                                            <label class="s_website_form_label" for="email">
+                                                                <span
+                                                                    class="s_website_form_label_content"
+                                                                    style="color: #666666;"
+                                                                >Email
+                                                                    Address</span>
+                                                            </label>
+                                                            <input
+                                                                type="email"
+                                                                id="email"
+                                                                name="email"
+                                                                class="form-control"
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <div class="s_website_form_field">
+                                                            <label
+                                                                class="s_website_form_label"
+                                                                for="mobile_number"
+                                                            >
+                                                                <span
+                                                                    class="s_website_form_label_content"
+                                                                    style="color: #666666;"
+                                                                >Mobile
+                                                                    Number</span>
+                                                            </label>
+                                                            <input
+                                                                type="text"
+                                                                id="mobile_number"
+                                                                name="mobile_number"
+                                                                class="form-control"
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-lg-6">
+                                                        <div class="s_website_form_field">
+                                                            <label class="s_website_form_label">
+                                                                <span
+                                                                    class="s_website_form_label_content"
+                                                                    style="color: #666666;"
+                                                                >Gender</span>
+                                                            </label>
+                                                            <select class="form-select w-auto bg-light">
+                                                                <option t-foreach="gender" t-as="option">
+                                                                    <t t-out="option.value" />
+                                                                </option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <div class="s_website_form_field">
+                                                            <label class="s_website_form_label" for="dob">
+                                                                <span
+                                                                    class="s_website_form_label_content"
+                                                                    style="color: #666666;"
+                                                                >Date of
+                                                                    Birth</span>
+                                                            </label>
+                                                            <input
+                                                                type="date"
+                                                                id="dob"
+                                                                name="dob"
+                                                                class="form-control"
+                                                                required="required"
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="card container-right" style="width: auto; padding: 0px;">
+                                        <div class="card-header" style="padding: 0px;">
+                                            <h5 class="action-heading text-center">
+                                                Beneficiary Submission
+                                            </h5>
+                                            <p class="action-description">
+                                            </p>
+                                        </div>
+
+                                        <div class="card-body" style="padding: 20px;">
+                                            <button
+                                                id="beneficiary_submit"
+                                                type="submit"
+                                                class="btn btn-primary btn-lg btn-block form_submit_action"
+                                                style="width:100%"
+                                            >
+                                                Add
+                                            </button>
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-primary btn-lg btn-block form_cancel_action"
+                                                onclick="location.href = '/serviceprovider/home';"
+                                                style="width:100%"
+                                            >
+                                                Cancel
+                                            </button>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+
+                        <!-- <script
+                            type="text/javascript"
+                            src="/g2p_service_provider_portal/static/src/js/form_action.js"
+                        ></script> -->
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>
