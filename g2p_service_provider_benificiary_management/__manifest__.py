@@ -16,7 +16,6 @@
         "views/dashboard.xml",
         "views/error_page.xml",
         "views/group_template.xml",
-        "views/individual_template.xml",
         "views/success_page.xml",
     ],
     "assets": {

@@ -26,24 +26,23 @@
                             <div>
                                 <p class="table-title">Household List</p>
                                 <p
-                                    style="color: #783E83; font-size: 12px;  font-weight: 400; word-wrap: break-word:margin-bottom:10px; margin-left:25px"
+                                    style="color: #783E83; margin-left:25px"
                                 >
                                     <t t-out="len(groups)" />&amp;nbsp;Records </p>
                             </div>
-
-                            <div style="width: 100px; height: 100%; background: white; margin-top:15px">
-                                <select class="form-select" style="width: 100%; border-radius: 5px;">
-                                    <option>Kebela 1</option>
-                                    <option>Kebela 2</option>
-                                    <option>Kebela 3</option>
-                                </select>
-                            </div>
-
-                            <div style="width: 100px; height: 100%; background: white; margin-top:15px">
+                            <div style="width: 140px; height: 34px; border-radius: 5px;background: #FFF; margin-top:20px">
                                 <select class="form-select" style="width: 100%; border-radius: 5px;">
                                     <option>Region 1</option>
                                     <option>Region 2</option>
                                     <option>Region 3</option>
+                                </select>
+                            </div>
+                           
+                            <div style="width: 140px; height: 34px; border-radius: 5px;background: #FFF; margin-top:20px;position: relative;left: -120px;">
+                                <select class="form-select" style="width: 100%; border-radius: 5px;">
+                                    <option>Kebela 1</option>
+                                    <option>Kebela 2</option>
+                                    <option>Kebela 3</option>
                                 </select>
                             </div>
 
@@ -109,21 +108,20 @@
                                                 <t t-out="len(group['group_membership_ids'])" />
                                             </td>
                                             <td>
-                                                <t t-out="group['write_date'].strftime('%Y-%m-%d %H:%M')" />
+                                                <t t-out="group.write_date.date()" />
                                             </td>
                                             <td>
                                                 <t t-out="group['enumerator_name']" />
                                             </td>
                                             <td>
-                                                <t t-if="group['active']">
-                                                    <div string="active" class="active-button">Active</div>
-                                                </t>
-                                                <t t-else="">
-                                                    <div
-                                                        string="inactive"
-                                                        class="inactive-button"
-                                                    >Active</div>
-                                                </t>
+                                                <div class="status-icon">
+                                                    <t t-if="group['active']">
+                                                        <img src="/g2p_service_provider_benificiary_management/static/src/img/active_logo.png" class="active-logo" alt="Active"/>
+                                                    </t>
+                                                    <t t-else="">
+                                                        <img src="/g2p_service_provider_benificiary_management/static/src/img/inactive_logo.png" class="inactive-logo" alt="Inactive"/>
+                                                    </t>
+                                                </div>
                                             </td>
                                             <td>
                                                 <a t-attf-href="/serviceprovider/group/update/{{ group.id }}">
@@ -150,7 +148,6 @@
             </div>
         </t>
     </template>
-
     <!-- Update -->
     <template id="group_update_form_template" name="G2P Service Provider group update request">
         <t t-call="g2p_service_provider_portal_base.base">
@@ -191,11 +188,11 @@
                         </div>
                         <form
                             id="updategroupForm"
-                            action="/serviceprovider/group/submit/"
+                            action="/serviceprovider/group/update/submit/"
                             method="POST"
                             enctype="multipart/form-data"
                         >
-                            <input type="hidden" name="id" t-att-value="beneficiary.id" />
+                            <input type="hidden" name="group_id" t-att-value="beneficiary.id" />
                             <div class="row">
                                 <div class="col-md-12">
                                     <div
@@ -299,152 +296,6 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <!-- Location details -->
-                                            <div
-                                                class="card-header form-card-header collapsed"
-                                                style="padding: 0px;"
-                                                id="locate_header"
-                                                data-bs-toggle="collapse"
-                                                data-bs-target="#locate_fields"
-                                                aria-expanded="false"
-                                                aria-controls="locate_fields"
-                                            >
-                                                <div class="row">
-                                                    <div class="col-md-8">
-                                                        <h5 class="mb-0 form-heading">Administrative
-                                                            Location Details</h5>
-                                                    </div>
-                                                    <div class="col-md-4 text-end">
-                                                        <i class="fa fa-fw fa-angle-up up-angle" />
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- Location fields -->
-                                            <!-- TODO: Need to change this div into emdrc package -->
-                                            <div
-                                                id="locate_fields"
-                                                class="collapse"
-                                                data-bs-parent="#accordion"
-                                            >
-                                                <div class="row">
-                                                    <div class="col-lg-5">
-                                                        <div class="s_website_form_field">
-                                                            <label class="s_website_form_label" for="region">
-                                                                <span
-                                                                    class="s_website_form_label_content"
-                                                                    style="color: #666666;"
-                                                                >Region</span>
-                                                                <span class="s_website_form_mark"> *</span>
-                                                            </label>
-
-                                                            <select
-                                                                id="region"
-                                                                name="region"
-                                                                class="form-select"
-                                                            >
-                                                                <option value="tigray">Tigray</option>
-                                                                <option value="afar">Afar</option>
-                                                                <option value="amhara">Amhara</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-5">
-                                                        <div class="s_website_form_field">
-                                                            <label class="s_website_form_label" for="zone">
-                                                                <span
-                                                                    class="s_website_form_label_content"
-                                                                    style="color: #666666;"
-                                                                >Zone</span>
-                                                                <span class="s_website_form_mark"> *</span>
-                                                            </label>
-                                                            <select id="zone" name="zone" class="form-select">
-                                                                <option
-                                                                    value="north_western"
-                                                                >North Western</option>
-                                                                <option value="central">Central</option>
-                                                                <option value="eastern">Eastern</option>
-                                                                <!-- Add more options as needed -->
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-lg-5">
-                                                        <div class="s_website_form_field">
-                                                            <label class="s_website_form_label" for="woreda">
-                                                                <span
-                                                                    class="s_website_form_label_content"
-                                                                    style="color: #666666;"
-                                                                >Woreda</span>
-                                                                <span class="s_website_form_mark"> *</span>
-                                                            </label>
-                                                            <select
-                                                                id="woreda"
-                                                                name="woreda"
-                                                                class="form-select"
-                                                            >
-                                                                <option value="woreda1">Woreda 1</option>
-                                                                <option value="woreda2">Woreda 2</option>
-                                                                <option value="woreda3">Woreda 3</option>
-                                                                <!-- Add more options as needed -->
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-5">
-                                                        <div class="s_website_form_field">
-                                                            <label class="s_website_form_label" for="kebele">
-                                                                <span
-                                                                    class="s_website_form_label_content"
-                                                                    style="color: #666666;"
-                                                                >Kebele</span>
-                                                                <span class="s_website_form_mark"> *</span>
-                                                            </label>
-                                                            <input
-                                                                type="text"
-                                                                id="kebele"
-                                                                name="kebele"
-                                                                class="form-control"
-                                                            />
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-lg-5">
-                                                        <div class="s_website_form_field">
-                                                            <label class="s_website_form_label" for="gote">
-                                                                <span
-                                                                    class="s_website_form_label_content"
-                                                                    style="color: #666666;"
-                                                                >Gote</span>
-                                                                <span class="s_website_form_mark"> *</span>
-                                                            </label>
-                                                            <input
-                                                                type="text"
-                                                                id="gote"
-                                                                name="gote"
-                                                                class="form-control"
-                                                            />
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-5">
-                                                        <div class="s_website_form_field">
-                                                            <label class="s_website_form_label" for="village">
-                                                                <span
-                                                                    class="s_website_form_label_content"
-                                                                    style="color: #666666;"
-                                                                >Village</span>
-                                                                <span class="s_website_form_mark"> *</span>
-                                                            </label>
-                                                            <input
-                                                                type="text"
-                                                                id="village"
-                                                                name="village"
-                                                                class="form-control"
-                                                            />
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
 
                                             <!-- Member details -->
                                             <div id="member_header">
@@ -466,6 +317,88 @@
                                                         </div>
                                                     </div>
                                                 </div>
+                                                
+                                                <div class="members_img collapse" data-bs-parent="#accordion">
+                                                <t t-if="individuals">
+                                                    <div class="table-container old-list">
+                                                        <div class="tables-values-container">
+                                                            <table>
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>Sr.No.</th>
+                                                                        <th>Member Name <i
+                                                                                class="fa fa-sort"
+                                                                            /></th>
+                                                                        <th>Age <i class="fa fa-sort" /></th>
+                                                                        <th>Sex <i class="fa fa-sort" /></th>
+                                                                        <th>Relationship</th>
+                                                                        <th>Status <i class="fa fa-sort" /></th>
+                                                                        <th>Actions</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <t t-set="counter" t-value="1"/>
+
+                                                                    <t t-foreach="individuals" t-as="individual">
+                                                                        <tr>
+                                                                            <td>
+                                                                                <t t-out="counter"/>
+                                                                            </td>
+                                                                            <td
+                                                                                style="color:#704880; font: normal normal 600 13px/16px Inter;"
+                                                                            >
+                                                                                <t t-out="individual.name" />
+                                                                            </td>
+                                                                            <td>
+                                                                                <t t-out="individual.age" />
+                                                                            </td>
+                                                                            <td>
+                                                                                <t t-out="individual.gender" />
+                                                                            </td>
+                                                                            <td>
+                                                                                <t>Test</t>
+                                                                            </td>
+                                                                            <td>
+                                                                                <t t-if="beneficiary['active']">
+                                                                                    <div
+                                                                                        string="active"
+                                                                                        class="active-button"
+                                                                                    >
+                                                                                        Active</div>
+                                                                                </t>
+                                                                                <t t-else="">
+                                                                                    <div
+                                                                                        string="inactive"
+                                                                                        class="inactive-button"
+                                                                                    >
+                                                                                        Inactive</div>
+                                                                                </t>
+                                                                            </td>
+                                                                            <td>
+                                                                                <button class="btn btn-icon rounded-0" id="mem-update" t-attf-store="{{ individual.id }}" title="Edit">
+                                                                                    <i class="fa fa-pencil"></i>
+                                                                                </button>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <t t-set="counter" t-value="counter + 1"/>
+                                                                        <!-- </t> -->
+                                                                    </t>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+
+                                                </t>
+                                                <t t-else="">
+                                                    <div class="no_list">
+                                                        <img
+                                                            src="/g2p_service_provider_benificiary_management/static/src/img/no_mem.png"
+                                                        />
+                                                        <div>
+                                                            <p>No members!</p>
+                                                        </div>
+                                                    </div>
+                                                </t>
                                                 <div class="table-container mem-list">
                                                     <div class="tables-values-container">
                                                         <table id="memberlist">
@@ -483,78 +416,18 @@
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
-                                                                <t t-foreach="individuals" t-as="individual">
-                                                                    <tr>
-                                                                        <td>
-                                                                        </td>
-                                                                        <td
-                                                                            style="color:#704880; font: normal normal 600 13px/16px Inter;"
-                                                                        >
-                                                                            <t t-out="individual.name" />
-                                                                        </td>
-                                                                        <td>
-                                                                            <t t-out="group['age']" />
-                                                                        </td>
-                                                                        <td>
-                                                                            <t t-out="group['gender']" />
-                                                                        </td>
-                                                                        <td>
-                                                                            <t>Test</t>
-                                                                        </td>
-                                                                        <td>
-                                                                            <t t-if="group['active']">
-                                                                                <div
-                                                                                    string="active"
-                                                                                    class="active-button"
-                                                                                >
-                                                                                    Active</div>
-                                                                            </t>
-                                                                            <t t-else="">
-                                                                                <div
-                                                                                    string="inactive"
-                                                                                    class="inactive-button"
-                                                                                >
-                                                                                    Inactive</div>
-                                                                            </t>
-                                                                        </td>
-                                                                        <td>
-                                                                            <a
-                                                                                t-attf-href="/serviceprovider/individual/update/?mem={{ individual.id }}&amp;group={{ group.id }}"
-                                                                            >
-                                                                                <button
-                                                                                    class="btn btn-icon rounded-0"
-                                                                                    title="Edit"
-                                                                                >
-                                                                                    <i class="fa fa-pencil" />
-                                                                                </button>
-                                                                            </a>
-                                                                        </td>
-                                                                    </tr>
-                                                                    <!-- </t> -->
-                                                                </t>
                                                             </tbody>
                                                         </table>
                                                     </div>
                                                 </div>
-                                                <div class="members_img collapse" data-bs-parent="#accordion">
-
-                                                    <div class="no_list">
-                                                        <img
-                                                            src="/g2p_service_provider_benificiary_management/static/src/img/no_mem.png"
-                                                        />
-                                                        <div>
-                                                            <p>No members!</p>
-                                                        </div>
-                                                    </div>
-
-                                                    <button
-                                                        type="button"
-                                                        data-bs-toggle="modal"
-                                                        data-bs-target="#memberDetailModal"
-                                                        class="btn btn-primary create-new"
-                                                    > Add
-                                                        Member
-                                                    </button>
+                                                <button
+                                                    type="button"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#memberDetailModal"
+                                                    class="btn btn-primary create-new"
+                                                > Add
+                                                    Member
+                                                </button>
 
                                                 </div>
 
@@ -690,6 +563,10 @@
                                                                                         class="s_website_form_label_content"
                                                                                     >
                                                                                         Sex</span>
+                                                                                    <span
+                                                                                        class="s_website_form_mark"
+                                                                                    >
+                                                                                        *</span>
                                                                                 </label>
                                                                                 <div class="row">
                                                                                     <div class="col">
@@ -810,7 +687,7 @@
                                                 <button
                                                     id="beneficiary_submit"
                                                     type="submit"
-                                                    class="btn btn-primary"
+                                                    class="btn btn-primary create-new"
                                                 >
                                                     Submit
                                                 </button>
@@ -824,9 +701,15 @@
                     </div>
                 </div>
             </div>
+            <script
+            src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"
+        />
+            <script
+            type="text/javascript"
+            src="/g2p_service_provider_benificiary_management/static/src/js/member_form.js"
+        />
         </t>
     </template>
-
     <!-- Create -->
     <template id="group_create_form_template" name="G2P Service Provider group create request">
         <t t-call="g2p_service_provider_portal_base.base">
@@ -962,152 +845,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <!-- Location details -->
-                                            <div
-                                                class="card-header form-card-header collapsed"
-                                                style="padding: 0px;"
-                                                id="locate_header"
-                                                data-bs-toggle="collapse"
-                                                data-bs-target="#locate_fields"
-                                                aria-expanded="false"
-                                                aria-controls="locate_fields"
-                                            >
-                                                <div class="row">
-                                                    <div class="col-md-8">
-                                                        <h5 class="mb-0 form-heading">Administrative
-                                                            Location Details</h5>
-                                                    </div>
-                                                    <div class="col-md-4 text-end">
-                                                        <i class="fa fa-fw fa-angle-up up-angle" />
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- Location fields -->
-                                            <!-- TODO: Need to change this div into emdrc package -->
-                                            <div
-                                                id="locate_fields"
-                                                class="collapse"
-                                                data-bs-parent="#accordion"
-                                            >
-                                                <div class="row">
-                                                    <div class="col-lg-5">
-                                                        <div class="s_website_form_field">
-                                                            <label class="s_website_form_label" for="region">
-                                                                <span
-                                                                    class="s_website_form_label_content"
-                                                                    style="color: #666666;"
-                                                                >Region</span>
-                                                                <span class="s_website_form_mark"> *</span>
-                                                            </label>
-                                                            <select
-                                                                id="region"
-                                                                name="region"
-                                                                class="form-select"
-                                                            >
-                                                                <option value="tigray">Tigray</option>
-                                                                <option value="afar">Afar</option>
-                                                                <option value="amhara">Amhara</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-5">
-                                                        <div class="s_website_form_field">
-                                                            <label class="s_website_form_label" for="zone">
-                                                                <span
-                                                                    class="s_website_form_label_content"
-                                                                    style="color: #666666;"
-                                                                >Zone</span>
-                                                                <span class="s_website_form_mark"> *</span>
-                                                            </label>
-                                                            <select id="zone" name="zone" class="form-select">
-                                                                <option
-                                                                    value="north_western"
-                                                                >North Western</option>
-                                                                <option value="central">Central</option>
-                                                                <option value="eastern">Eastern</option>
-                                                                <!-- Add more options as needed -->
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-lg-5">
-                                                        <div class="s_website_form_field">
-                                                            <label class="s_website_form_label" for="woreda">
-                                                                <span
-                                                                    class="s_website_form_label_content"
-                                                                    style="color: #666666;"
-                                                                >Woreda</span>
-                                                                <span class="s_website_form_mark"> *</span>
-                                                            </label>
-                                                            <select
-                                                                id="woreda"
-                                                                name="woreda"
-                                                                class="form-select"
-                                                            >
-                                                                <option value="woreda1">Woreda 1</option>
-                                                                <option value="woreda2">Woreda 2</option>
-                                                                <option value="woreda3">Woreda 3</option>
-                                                                <!-- Add more options as needed -->
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-5">
-                                                        <div class="s_website_form_field">
-                                                            <label class="s_website_form_label" for="kebele">
-                                                                <span
-                                                                    class="s_website_form_label_content"
-                                                                    style="color: #666666;"
-                                                                >Kebele</span>
-                                                                <span class="s_website_form_mark"> *</span>
-                                                            </label>
-                                                            <input
-                                                                type="text"
-                                                                id="kebele"
-                                                                name="kebele"
-                                                                class="form-control"
-                                                            />
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-lg-5">
-                                                        <div class="s_website_form_field">
-                                                            <label class="s_website_form_label" for="gote">
-                                                                <span
-                                                                    class="s_website_form_label_content"
-                                                                    style="color: #666666;"
-                                                                >Gote</span>
-                                                                <span class="s_website_form_mark"> *</span>
-                                                            </label>
-                                                            <input
-                                                                type="text"
-                                                                id="gote"
-                                                                name="gote"
-                                                                class="form-control"
-                                                            />
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-5">
-                                                        <div class="s_website_form_field">
-                                                            <label class="s_website_form_label" for="village">
-                                                                <span
-                                                                    class="s_website_form_label_content"
-                                                                    style="color: #666666;"
-                                                                >Village</span>
-                                                                <span class="s_website_form_mark"> *</span>
-                                                            </label>
-                                                            <input
-                                                                type="text"
-                                                                id="village"
-                                                                name="village"
-                                                                class="form-control"
-                                                            />
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
+                                           
                                             <!-- Member details -->
                                             <div id="member_header">
                                                 <div
@@ -1128,77 +866,78 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="table-container mem-list">
-                                                    <div class="tables-values-container">
-                                                        <table id="memberlist">
-                                                            <thead>
-                                                                <tr>
-                                                                    <th>Sr.No.</th>
-                                                                    <th>Member Name <i
-                                                                            class="fa fa-sort"
-                                                                        /></th>
-                                                                    <th>Age <i class="fa fa-sort" /></th>
-                                                                    <th>Sex <i class="fa fa-sort" /></th>
-                                                                    <th>Relationship</th>
-                                                                    <th>Status <i class="fa fa-sort" /></th>
-                                                                    <th>Actions</th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                                <t t-foreach="individuals" t-as="individual">
-                                                                    <tr>
-                                                                        <td>
-                                                                        </td>
-                                                                        <td
-                                                                            style="color:#704880; font: normal normal 600 13px/16px Inter;"
-                                                                        >
-                                                                            <t t-out="individual.name" />
-                                                                        </td>
-                                                                        <td>
-                                                                            <t t-out="group['age']" />
-                                                                        </td>
-                                                                        <td>
-                                                                            <t t-out="group['gender']" />
-                                                                        </td>
-                                                                        <td>
-                                                                            <t>Test</t>
-                                                                        </td>
-                                                                        <td>
-                                                                            <t t-if="group['active']">
-                                                                                <div
-                                                                                    string="active"
-                                                                                    class="active-button"
-                                                                                >
-                                                                                    Active</div>
-                                                                            </t>
-                                                                            <t t-else="">
-                                                                                <div
-                                                                                    string="inactive"
-                                                                                    class="inactive-button"
-                                                                                >
-                                                                                    Inactive</div>
-                                                                            </t>
-                                                                        </td>
-                                                                        <td>
-                                                                            <a
-                                                                                t-attf-href="/serviceprovider/individual/update/?mem={{ individual.id }}&amp;group={{ group.id }}"
-                                                                            >
-                                                                                <button
-                                                                                    class="btn btn-icon rounded-0"
-                                                                                    title="Edit"
-                                                                                >
-                                                                                    <i class="fa fa-pencil" />
-                                                                                </button>
-                                                                            </a>
-                                                                        </td>
-                                                                    </tr>
-                                                                    <!-- </t> -->
-                                                                </t>
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                </div>
+                                                
                                                 <div class="members_img collapse" data-bs-parent="#accordion">
+                                                    <div class="table-container mem-list">
+                                                        <div class="tables-values-container">
+                                                            <table id="memberlist">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>Sr.No.</th>
+                                                                        <th>Member Name <i
+                                                                                class="fa fa-sort"
+                                                                            /></th>
+                                                                        <th>Age <i class="fa fa-sort" /></th>
+                                                                        <th>Sex <i class="fa fa-sort" /></th>
+                                                                        <th>Relationship</th>
+                                                                        <th>Status <i class="fa fa-sort" /></th>
+                                                                        <th>Actions</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <t t-foreach="individuals" t-as="individual">
+                                                                        <tr>
+                                                                            <td>
+                                                                            </td>
+                                                                            <td
+                                                                                style="color:#704880; font: normal normal 600 13px/16px Inter;"
+                                                                            >
+                                                                                <t t-out="individual.name" />
+                                                                            </td>
+                                                                            <td>
+                                                                                <t t-out="group['age']" />
+                                                                            </td>
+                                                                            <td>
+                                                                                <t t-out="group['gender']" />
+                                                                            </td>
+                                                                            <td>
+                                                                                <t>Test</t>
+                                                                            </td>
+                                                                            <td>
+                                                                                <t t-if="group['active']">
+                                                                                    <div
+                                                                                        string="active"
+                                                                                        class="active-button"
+                                                                                    >
+                                                                                        Active</div>
+                                                                                </t>
+                                                                                <t t-else="">
+                                                                                    <div
+                                                                                        string="inactive"
+                                                                                        class="inactive-button"
+                                                                                    >
+                                                                                        Inactive</div>
+                                                                                </t>
+                                                                            </td>
+                                                                            <td>
+                                                                                <a
+                                                                                    t-attf-href="/serviceprovider/individual/update/?mem={{ individual.id }}&amp;group={{ group.id }}"
+                                                                                >
+                                                                                    <button
+                                                                                        class="btn btn-icon rounded-0"
+                                                                                        title="Edit"
+                                                                                    >
+                                                                                        <i class="fa fa-pencil" />
+                                                                                    </button>
+                                                                                </a>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <!-- </t> -->
+                                                                    </t>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
 
                                                     <div class="no_list">
                                                         <img
@@ -1352,6 +1091,10 @@
                                                                                         class="s_website_form_label_content"
                                                                                     >
                                                                                         Sex</span>
+                                                                                    <span
+                                                                                        class="s_website_form_mark"
+                                                                                    >
+                                                                                        *</span>
                                                                                 </label>
                                                                                 <div class="row">
                                                                                     <div class="col">
@@ -1473,7 +1216,7 @@
                                                 <button
                                                     id="beneficiary_submit"
                                                     type="submit"
-                                                    class="btn btn-primary"
+                                                    class="btn btn-primary create-new"
                                                 >
                                                     Submit
                                                 </button>
