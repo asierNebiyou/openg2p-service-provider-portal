@@ -114,15 +114,14 @@
                                                 <t t-out="group['enumerator_name']" />
                                             </td>
                                             <td>
-                                                <t t-if="group['active']">
-                                                    <div string="active" class="active-button">Active</div>
-                                                </t>
-                                                <t t-else="">
-                                                    <div
-                                                        string="inactive"
-                                                        class="inactive-button"
-                                                    >Active</div>
-                                                </t>
+                                                <div class="status-icon">
+                                                    <t t-if="group['active']">
+                                                        <img src="/g2p_service_provider_benificiary_management/static/src/img/active_logo.png" class="active-logo" alt="Active"/>
+                                                    </t>
+                                                    <t t-else="">
+                                                        <img src="/g2p_service_provider_benificiary_management/static/src/img/inactive_logo.png" class="inactive-logo" alt="Inactive"/>
+                                                    </t>
+                                                </div>
                                             </td>
                                             <td>
                                                 <a t-attf-href="/serviceprovider/group/update/{{ group.id }}">
