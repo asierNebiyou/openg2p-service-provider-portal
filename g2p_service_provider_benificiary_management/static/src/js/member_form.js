@@ -1,4 +1,3 @@
-console.log("#################Member Loaded##########");
 
 function showToast(message) {
     const toast_message = $("#memberDetailModal #toast-message");
@@ -16,32 +15,16 @@ function resetFormFields() {
     $("#memberDetailModal input, #memberDetailModal select").val("");
 }
 
-// List of membership
-function fetchGroupMemberships(groupId) {
-    $.ajax({
-        url: "/serviceprovider/group/membership/list/" + groupId,
-        method: "GET",
-        dataType: "json",
-        success: function (response) {
-            // Process the list of memberships received from the server
-            console.log("Group memberships:", response);
-        },
-        error: function (error) {
-            console.error("Ajax request failed");
-            console.error("Error:", error);
-        },
-    });
-}
-
 // Replace button
 $('[data-bs-target="#memberDetailModal"]').on("click", function () {
     $("#update-member-btn").replaceWith(
         '<button id="member_submit" type="button" class="btn btn-primary create-new">Add</button>'
     );
+    resetFormFields();
 });
 
-$("#member_submit").on("click", function () {
-    console.log("clicked################");
+// Add button
+$(document).on("click", "#member_submit", function () {
     var group = $("input[name='group_id']").val();
     var Householdname = $("#name").val();
     var firstName = $("#memberDetailModal #given_name").val();
@@ -97,13 +80,15 @@ $("#member_submit").on("click", function () {
                     $("input[name='group_id']").val(member_list[0].group_id);
                     // Hide no_list
                     $(".no_list").css("display", "none");
+
                     // Get the table body
                     var tableBody = $("#memberlist tbody");
                     // Clear existing rows
                     tableBody.empty();
+                    $(".old-list").css("display", "none");
+
                     // Iterate over the member list and append rows to the table
                     member_list.forEach(function (member, index) {
-                        console.log("meneb#########eachloop", member, index);
                         $(".mem-list").css("display", "block");
                         var serialNumber = index + 1;
                         var newRowHtml =
@@ -121,7 +106,7 @@ $("#member_submit").on("click", function () {
                             member.gender +
                             "</td>" +
                             "<td>" +
-                            member.relationship +
+                            "dependent" +
                             "</td>" +
                             "<td>" +
                             '<div class="active-button">' +
@@ -145,18 +130,16 @@ $("#member_submit").on("click", function () {
             }
         },
         error: function (error) {
-            console.error("Ajax request failed");
+            console.error("request failed");
             console.error("Error:", error);
         },
     });
 });
 
+// Edit Icon
 $(document).on("click", "#mem-update", function () {
-    // Get the member ID from the data attribute of the button
-
     var memberId = $(this).attr("store");
-
-    // Make an AJAX request to fetch the member details
+    var modal = $("#memberDetailModal");
     $.ajax({
         url: "/serviceprovider/member/update/",
         method: "POST",
@@ -165,25 +148,23 @@ $(document).on("click", "#mem-update", function () {
         },
         dataType: "json",
         success: function (response) {
-            console.log("Ajax request successful");
-            console.log("Member Details Fetch exist data:", response);
 
             // Populate modal fields with member details
-            $("#given_name").val(response.given_name);
-            $("#addl_name").val(response.addl_name);
-            $("#family_name").val(response.family_name);
-            $("#birthdate").val(response.dob);
-            $('select[name="gender"]').val(response.gender);
+            modal.find("#given_name").val(response.given_name);
+            modal.find("#addl_name").val(response.addl_name);
+            modal.find("#family_name").val(response.family_name);
+            modal.find("#birthdate").val(response.dob);
+            modal.find('select[name="gender"]').val(response.gender);
 
             // Replace button
             $("#member_submit").replaceWith(
                 '<button id="update-member-btn" store="' +
-                    memberId +
-                    '" class="btn btn-primary create-new">Update</button>'
+                memberId +
+                '" class="btn btn-primary create-new">Update</button>'
             );
 
             // Show the modal
-            $("#memberDetailModal").modal("show");
+            modal.modal("show");
         },
         error: function (error) {
             console.error("Ajax request failed");
@@ -196,6 +177,7 @@ $(document).on("click", "#mem-update", function () {
 $(document).on("click", "#update-member-btn", function () {
     // Get the member ID
     var memberId = $(this).attr("store");
+
     // Get updated member details from the modal fields
     var group = $("input[name='group_id']").val();
     var firstName = $("#memberDetailModal #given_name").val();
@@ -208,7 +190,6 @@ $(document).on("click", "#update-member-btn", function () {
     $(".form-control, .form-select").removeClass("is-invalid");
 
     if (!firstName || !lastName || !gender) {
-        console.log("empty");
         isValid = false;
         // Highlight empty required fields with a red border color
         $("#memberDetailModal .form-control, #memberDetailModal .form-select").each(function () {
@@ -237,13 +218,9 @@ $(document).on("click", "#update-member-btn", function () {
         },
         dataType: "json",
         success: function (response) {
-            console.log("Ajax request successful");
-            console.log("Response:", response);
-
             // Check if member_list exists in the response
             if (response && response.member_list) {
                 var member_list = response.member_list;
-                console.log("Member List:", member_list);
                 $("#memberDetailModal").modal("hide");
 
                 // Get the table body
@@ -251,7 +228,6 @@ $(document).on("click", "#update-member-btn", function () {
                 tableBody.empty();
 
                 member_list.forEach(function (member, index) {
-                    console.log("Member:", member, "Index:", index);
                     var serialNumber = index + 1;
 
                     var newRowHtml =
@@ -269,7 +245,7 @@ $(document).on("click", "#update-member-btn", function () {
                         member.gender +
                         "</td>" +
                         "<td>" +
-                        member.relationship +
+                        "dependent"
                         "</td>" +
                         "<td>" +
                         '<div class="active-button">' +
@@ -288,12 +264,11 @@ $(document).on("click", "#update-member-btn", function () {
                     tableBody.append(newRowHtml);
                 });
             } else {
-                console.error("Member list not found in the response.");
+                console.error("FINAL Member list not found in the response.");
             }
         },
 
         error: function (error) {
-            console.error("Ajax request failed");
             console.error("Error:", error);
         },
     });

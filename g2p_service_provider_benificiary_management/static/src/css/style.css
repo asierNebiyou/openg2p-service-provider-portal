@@ -106,7 +106,7 @@
     padding: 10px;
     opacity: 1;
     display: flex;
-    margin-top: 10px;
+    margin-top: 20px;
     justify-content: start;
     align-items: center;
 }
@@ -1833,7 +1833,7 @@ li div p {
 }
 .members_img {
     text-align: center;
-    margin: 20px;
+    /* margin: 20px; */
 }
 
 .mem-list {

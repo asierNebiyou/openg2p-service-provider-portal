@@ -47,11 +47,6 @@
                                     aria-haspopup="true"
                                     aria-expanded="false"
                                 >
-                                    <img
-                                        src="/g2p_service_provider_portal_base/static/src/img/flag_en.png"
-                                        alt="English"
-                                        class="flag"
-                                    />
                                     <span>English</span>
                                 </button>
                                 <div class="dropdown-menu" aria-labelledby="language-dropdown-button">
@@ -60,11 +55,6 @@
                                         href="/website/lang/en?r=/serviceprovider"
                                         data-url_code="en"
                                     >
-                                        <img
-                                            src="/g2p_service_provider_portal_base/static/src/img/flag_en.png"
-                                            alt="English"
-                                            class="flag"
-                                        />
                                         <span>English</span>
                                     </a>
                                     <a
@@ -72,11 +62,6 @@
                                         href="/website/lang/fr?r=/serviceprovider"
                                         data-url_code="fr"
                                     >
-                                        <img
-                                            src="/g2p_service_provider_portal_base/static/src/img/flag_fr.png"
-                                            alt="Français"
-                                            class="flag"
-                                        />
                                         <span>Français</span>
                                     </a>
                                     <a
@@ -84,11 +69,6 @@
                                         href="/website/lang/tl?r=/serviceprovider"
                                         data-url_code="tl"
                                     >
-                                        <img
-                                            src="/g2p_service_provider_portal_base/static/src/img/flag_ph.png"
-                                            alt="Filipino"
-                                            class="flag"
-                                        />
                                         <span>Filipino</span>
                                     </a>
                                 </div>
