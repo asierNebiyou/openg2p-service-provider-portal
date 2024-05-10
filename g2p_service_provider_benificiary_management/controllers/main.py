@@ -169,6 +169,32 @@ class G2pServiceProviderBenificiaryManagement(http.Controller):
                             {"name": head_name, "is_registrant": True, "is_group": True}
                         )
                     )
+                    # Head creation
+                    head_name_parts = head_name.split(' ')
+                    h_given_name = head_name_parts[0]
+                    h_family_name = head_name_parts[-1]
+
+                    
+                    if len(head_name_parts) > 2:
+                        h_addl_name = ' '.join(head_name_parts[1:-1])
+                    else:
+                        h_addl_name = ""
+
+                    name = f"{h_given_name}, {h_addl_name} {h_family_name}"
+
+                    head_individual = (
+                        request.env["res.partner"]
+                        .sudo()
+                        .create(
+                            {
+                                "given_name": h_given_name,
+                                "name": name,
+                                "addl_name": h_addl_name,
+                                "family_name": h_family_name,
+                            }
+                        )
+                    )
+
             given_name = kw.get("given_name")
             family_name = kw.get("family_name")
             addl_name = kw.get("addl_name")
@@ -192,30 +218,7 @@ class G2pServiceProviderBenificiaryManagement(http.Controller):
 
             individual = request.env["res.partner"].sudo().create(partner_data)
 
-            # Head creation
-            if head_name:
-                head_name_parts = head_name.split(' ')
-                given_name = head_name_parts[0]
-                family_name = head_name_parts[-1]
-                
-                if len(head_name_parts) > 2:
-                    addl_name = ' '.join(head_name_parts[1:-1])
-                else:
-                    addl_name = ""
-
-                head_individual = (
-                    request.env["res.partner"]
-                    .sudo()
-                    .create(
-                        {
-                            "given_name": given_name,
-                            "name": head_name,
-                            "addl_name": addl_name,
-                            "family_name": family_name,
-                        }
-                    )
-                )
-
+           
             # Member creation only if head_individual is created
             group_membership_vals = [(0, 0, {"individual": individual.id, "group": group_rec.id})]
 
@@ -289,8 +292,11 @@ class G2pServiceProviderBenificiaryManagement(http.Controller):
                 given_name = kw.get("given_name")
                 family_name = kw.get("family_name")
                 addl_name = kw.get("addl_name")
+                
 
                 name = f"{given_name}, {addl_name} {family_name}"
+                print("name:",name)
+
                 member.sudo().write(
                     {
                         "given_name": given_name,
@@ -305,7 +311,9 @@ class G2pServiceProviderBenificiaryManagement(http.Controller):
                     request.env["res.partner"].sudo().browse(int(kw.get("group_id")))
                 )
                 member_list = []
+
                 for membership in group.group_membership_ids:
+                    print("EMBRSHJIP OCUUNT",membership)
                     member_list.append(
                         {
                             "id": membership.individual.id,
@@ -316,6 +324,8 @@ class G2pServiceProviderBenificiaryManagement(http.Controller):
                             "group_id": membership.group.id,
                         }
                     )
+                print("EMBRSHJIP OCUUNT",len(member_list),member_list)
+                
 
                 res["member_list"] = member_list
                 return json.dumps(res)

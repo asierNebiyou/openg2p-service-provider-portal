@@ -1,3 +1,13 @@
+// date restriction
+$(document).ready(function() {
+    var today ="";
+    $('.date-picker').each(function() {
+        var input = this;
+        var today = new Date().toISOString().split('T')[0];
+        input.setAttribute('max', today);
+    });
+});
+
 
 function showToast(message) {
     const toast_message = $("#memberDetailModal #toast-message");
@@ -18,7 +28,7 @@ function resetFormFields() {
 // Replace button
 $('[data-bs-target="#memberDetailModal"]').on("click", function () {
     $("#update-member-btn").replaceWith(
-        '<button id="member_submit" type="button" class="btn btn-primary create-new">Add</button>'
+        '<div id="member_submit" type="button" class="btn btn-primary create-new">Add</div>'
     );
     resetFormFields();
 });
@@ -42,11 +52,12 @@ $(document).on("click", "#member_submit", function () {
         console.log("empty");
         isValid = false;
         // Highlight empty required fields with a red border color
-        $("#memberDetailModal .form-control, #memberDetailModal .form-select").each(function () {
+        $("#memberDetailModal .form-control[required], #memberDetailModal .form-select[required]").each(function () {
             if (!$(this).val().trim()) {
                 $(this).addClass("is-invalid");
             }
         });
+        
     }
 
     if (!isValid) {
@@ -123,6 +134,7 @@ $(document).on("click", "#member_submit", function () {
                             "</tr>";
 
                         tableBody.append(newRowHtml);
+                        
                     });
                 }
             } else {
@@ -158,9 +170,9 @@ $(document).on("click", "#mem-update", function () {
 
             // Replace button
             $("#member_submit").replaceWith(
-                '<button id="update-member-btn" store="' +
+                '<div id="update-member-btn" store="' +
                 memberId +
-                '" class="btn btn-primary create-new">Update</button>'
+                '" class="btn btn-primary create-new">Update</div>'
             );
 
             // Show the modal
@@ -229,38 +241,38 @@ $(document).on("click", "#update-member-btn", function () {
 
                 member_list.forEach(function (member, index) {
                     var serialNumber = index + 1;
-
+                    console.log("Member########",member,index);
                     var newRowHtml =
-                        "<tr>" +
-                        "<td>" +
-                        serialNumber +
-                        "</td>" +
-                        '<td style="color:#704880; font: normal normal 600 13px/16px Inter;">' +
-                        member.name +
-                        "</td>" +
-                        "<td>" +
-                        member.age +
-                        "</td>" +
-                        "<td>" +
-                        member.gender +
-                        "</td>" +
-                        "<td>" +
-                        "dependent"
-                        "</td>" +
-                        "<td>" +
-                        '<div class="active-button">' +
-                        (member.active ? "Active" : "Inactive") +
-                        "</div>" +
-                        "</td>" +
-                        "<td>" +
-                        '<button class="btn btn-icon rounded-0" id="mem-update" store="' +
-                        member.id +
-                        '" title="Edit">' +
-                        '<i class="fa fa-pencil"></i>' +
-                        "</button>" +
-                        "</td>" +
-                        "</tr>";
-
+                            "<tr>" +
+                            "<td>" +
+                            serialNumber +
+                            "</td>" +
+                            '<td style="color:#704880; font: normal normal 600 13px/16px Inter;">' +
+                            member.name +
+                            "</td>" +
+                            "<td>" +
+                            member.age +
+                            "</td>" +
+                            "<td>" +
+                            member.gender +
+                            "</td>" +
+                            "<td>" +
+                            "dependent" +
+                            "</td>" +
+                            "<td>" +
+                            '<div class="active-button">' +
+                            (member.active ? "Active" : "Inactive") +
+                            "</div>" +
+                            "</td>" +
+                            "<td>" +
+                            '<button class="btn btn-icon rounded-0" id="mem-update" store="' +
+                            member.id +
+                            '" title="Edit">' +
+                            '<i class="fa fa-pencil"></i>' +
+                            "</button>" +
+                            "</td>" +
+                            "</tr>";
+                    console.log("newRowHtml########",newRowHtml);
                     tableBody.append(newRowHtml);
                 });
             } else {

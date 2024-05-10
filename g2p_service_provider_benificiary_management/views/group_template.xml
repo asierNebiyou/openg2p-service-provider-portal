@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <!-- #list -->
     <template id="group_list" name="G2P Service Provider group">
@@ -23,28 +23,14 @@
                     </ol>
                     <div class="table-container">
                         <div class="table-head-container">
-                            <div>
+                            <div id="head_name_rec">
                                 <p class="table-title">Household List</p>
                                 <p
                                     style="color: #783E83; margin-left:25px"
                                 >
                                     <t t-out="len(groups)" />&amp;nbsp;Records </p>
                             </div>
-                            <div style="width: 140px; height: 34px; border-radius: 5px;background: #FFF; margin-top:20px">
-                                <select class="form-select" style="width: 100%; border-radius: 5px;">
-                                    <option>Region 1</option>
-                                    <option>Region 2</option>
-                                    <option>Region 3</option>
-                                </select>
-                            </div>
                            
-                            <div style="width: 140px; height: 34px; border-radius: 5px;background: #FFF; margin-top:20px;position: relative;left: -120px;">
-                                <select class="form-select" style="width: 100%; border-radius: 5px;">
-                                    <option>Kebela 1</option>
-                                    <option>Kebela 2</option>
-                                    <option>Kebela 3</option>
-                                </select>
-                            </div>
 
                             <form class="form-inline my-2 my-lg-0">
                                 <div class="search-box">
@@ -70,6 +56,7 @@
                                         <i class="fa fa-times" />
                                     </span>
                                 </div>
+                                <div id="search-result-count" style="color: #783E83;font-weight:500;padding:5px"></div>
                             </form>
                         </div>
 
@@ -116,16 +103,22 @@
                                             <td>
                                                 <div class="status-icon">
                                                     <t t-if="group['active']">
-                                                        <img src="/g2p_service_provider_benificiary_management/static/src/img/active_logo.png" class="active-logo" alt="Active"/>
+                                                        <img
+                                                            src="/g2p_service_provider_benificiary_management/static/src/img/active_logo.png"
+                                                            class="active-logo" alt="Active" />
                                                     </t>
                                                     <t t-else="">
-                                                        <img src="/g2p_service_provider_benificiary_management/static/src/img/inactive_logo.png" class="inactive-logo" alt="Inactive"/>
+                                                        <img
+                                                            src="/g2p_service_provider_benificiary_management/static/src/img/inactive_logo.png"
+                                                            class="inactive-logo" alt="Inactive" />
                                                     </t>
                                                 </div>
                                             </td>
                                             <td>
-                                                <a t-attf-href="/serviceprovider/group/update/{{ group.id }}">
-                                                    <button string="Update" type="object" class="view-button">
+                                                <a
+                                                    t-attf-href="/serviceprovider/group/update/{{ group.id }}">
+                                                    <button string="Update" type="object"
+                                                        class="view-button">
                                                         Update
                                                     </button>
                                                 </a>
@@ -200,24 +193,21 @@
                                         style="width: auto; padding: 0px;"
                                         id="accordion"
                                     >
-                                        <div
-                                            class="card-header form-card-header"
-                                            style="padding: 0px;"
-                                            id="household_header"
-                                            data-bs-toggle="collapse"
-                                            data-bs-target="#demographic"
-                                            aria-expanded="true"
-                                            aria-controls="demographic"
-                                        >
-                                            <div class="row">
-                                                <div class="col-md-8">
-                                                    <h5 class="mb-0 form-heading">Household Head
-                                                        Details</h5>
+
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header">
+                                                <div
+                                                    class="accordion-button card-header form-card-header"
+                                                    style="padding:15px;font-weight:500;"
+                                                    id="household_header"
+                                                    data-bs-toggle="collapse"
+                                                    data-bs-target="#demographic"
+                                                    aria-expanded="true"
+                                                    aria-controls="demographic">
+                                                    Household Head
+                                                    Details
                                                 </div>
-                                                <div class="col-md-4 text-end">
-                                                    <i class="fa fa-fw fa-angle-up up-angle" />
-                                                </div>
-                                            </div>
+                                            </h2>
                                         </div>
                                         <div class="card-body" style="padding: 0px;">
                                             <div
@@ -229,7 +219,8 @@
                                                 <div class="row">
                                                     <div class="col-lg-8">
                                                         <div class="s_website_form_field">
-                                                            <label class="s_website_form_label" for="name">
+                                                            <label class="s_website_form_label"
+                                                                for="name">
                                                                 <span
                                                                     class="s_website_form_label_content"
                                                                     style="color: #666666;"
@@ -244,7 +235,8 @@
                                                                 name="name"
                                                                 class="form-control"
                                                                 required="required"
-                                                                t-att-value="beneficiary.name if beneficiary.name else '&#8209;'"
+                                                                placeholder="FirstName  MiddleName  LastName"
+                                                                t-att-value="beneficiary.name if beneficiary.name else ''"
                                                             />
                                                         </div>
                                                     </div>
@@ -265,28 +257,32 @@
                                                             </label>
                                                             <input
                                                                 type="date"
-                                                                id="birthdate"
+                                                                id="date-picker"
                                                                 name="birthdate"
-                                                                class="form-control"
+                                                                class="form-control date-picker"
                                                                 t-att-value="beneficiary.birthdate"
                                                             />
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-4">
                                                         <div class="s_website_form_field">
-                                                            <label class="s_website_form_label mb-3">
-                                                                <span class="s_website_form_label_content">
+                                                            <label class="s_website_form_label">
+                                                                <span
+                                                                    class="s_website_form_label_content">
                                                                     Sex</span>
                                                             </label>
                                                             <div class="row">
                                                                 <div class="col">
-                                                                    <select class="form-select" name="gender">
-                                                                        <t t-foreach="gender" t-as="option">
+                                                                    <select class="form-select"
+                                                                        name="gender">
+                                                                        <t t-foreach="gender"
+                                                                            t-as="option">
                                                                             <option
                                                                                 t-att-value="option.value"
                                                                                 t-att-selected="option.value == beneficiary.gender"
                                                                             >
-                                                                                <t t-out="option.code" />
+                                                                                <t
+                                                                                    t-out="option.code" />
                                                                             </option>
                                                                         </t>
                                                                     </select>
@@ -299,135 +295,152 @@
 
                                             <!-- Member details -->
                                             <div id="member_header">
-                                                <div
-                                                    class="card-header form-card-header collapsed"
-                                                    style="padding: 0px;"
-                                                    data-bs-toggle="collapse"
-                                                    data-bs-target=".members_img"
-                                                    aria-expanded="false"
-                                                    aria-controls="members_img"
-                                                >
-                                                    <div class="row">
-                                                        <div class="col-md-8">
-                                                            <h5 class="mb-0 form-heading">Member
-                                                                Details</h5>
+                                                <div class="accordion-item">
+                                                    <h2 class="accordion-header">
+                                                        <div
+                                                            class="accordion-button collapsed card-header form-card-header"
+                                                            style="padding:15px;font-weight:500;"
+                                                            id="member_collab"
+                                                            data-bs-toggle="collapse"
+                                                            data-bs-target=".members_img"
+                                                            aria-expanded="false"
+                                                            aria-controls="members_img">
+                                                            Member
+                                                            Details
                                                         </div>
-                                                        <div class="col-md-4 text-end">
-                                                            <i class="fa fa-fw fa-angle-up up-angle" />
-                                                        </div>
-                                                    </div>
+                                                    </h2>
                                                 </div>
-                                                
-                                                <div class="members_img collapse" data-bs-parent="#accordion">
-                                                <t t-if="individuals">
-                                                    <div class="table-container old-list">
+
+                                                <div class="members_img collapse"
+                                                    data-bs-parent="#accordion">
+                                                    <t t-if="individuals">
+                                                        <div class="table-container old-list">
+                                                            <div class="tables-values-container">
+                                                                <table id="memberlist">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th>Sr.No.</th>
+                                                                            <th>Member Name <i
+                                                                                    class="fa fa-sort"
+                                                                                /></th>
+                                                                            <th>Age <i
+                                                                                    class="fa fa-sort" /></th>
+                                                                            <th>Sex <i
+                                                                                    class="fa fa-sort" /></th>
+                                                                            <th>Relationship</th>
+                                                                            <th>Status <i
+                                                                                    class="fa fa-sort" /></th>
+                                                                            <th>Actions</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <t t-set="counter"
+                                                                            t-value="1" />
+
+                                                                        <t t-foreach="individuals"
+                                                                            t-as="individual">
+                                                                            <tr>
+                                                                                <td>
+                                                                                    <t
+                                                                                        t-out="counter" />
+                                                                                </td>
+                                                                                <td
+                                                                                    style="color:#704880; font: normal normal 600 13px/16px Inter;"
+                                                                                >
+                                                                                    <t
+                                                                                        t-out="individual.name" />
+                                                                                </td>
+                                                                                <td>
+                                                                                    <t
+                                                                                        t-out="individual.age" />
+                                                                                </td>
+                                                                                <td>
+                                                                                    <t
+                                                                                        t-out="individual.gender" />
+                                                                                </td>
+                                                                                <td>
+                                                                                    <t>Test</t>
+                                                                                </td>
+                                                                                <td>
+                                                                                    <t
+                                                                                        t-if="beneficiary['active']">
+                                                                                        <div
+                                                                                            string="active"
+                                                                                            class="active-button"
+                                                                                        >
+                                                                                            Active</div>
+                                                                                    </t>
+                                                                                    <t t-else="">
+                                                                                        <div
+                                                                                            string="inactive"
+                                                                                            class="inactive-button"
+                                                                                        >
+                                                                                            Inactive</div>
+                                                                                    </t>
+                                                                                </td>
+                                                                                <td>
+                                                                                    <div
+                                                                                        class="btn btn-icon rounded-0"
+                                                                                        id="mem-update"
+                                                                                        t-attf-store="{{ individual.id }}"
+                                                                                        title="Edit">
+                                                                                        <i
+                                                                                            class="fa fa-pencil"></i>
+                                                                                    </div>
+                                                                                </td>
+                                                                            </tr>
+                                                                            <t t-set="counter"
+                                                                                t-value="counter + 1" />
+                                                                            <!-- </t> -->
+                                                                        </t>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+
+                                                    </t>
+                                                    <t t-else="">
+                                                        <div class="no_list">
+                                                            <img
+                                                                src="/g2p_service_provider_benificiary_management/static/src/img/no_mem.png"
+                                                            />
+                                                            <div>
+                                                                <p>No members!</p>
+                                                            </div>
+                                                        </div>
+                                                    </t>
+                                                    <div class="table-container mem-list">
                                                         <div class="tables-values-container">
-                                                            <table>
+                                                            <table id="memberlist">
                                                                 <thead>
                                                                     <tr>
                                                                         <th>Sr.No.</th>
                                                                         <th>Member Name <i
                                                                                 class="fa fa-sort"
                                                                             /></th>
-                                                                        <th>Age <i class="fa fa-sort" /></th>
-                                                                        <th>Sex <i class="fa fa-sort" /></th>
+                                                                        <th>Age <i
+                                                                                class="fa fa-sort" /></th>
+                                                                        <th>Sex <i
+                                                                                class="fa fa-sort" /></th>
                                                                         <th>Relationship</th>
-                                                                        <th>Status <i class="fa fa-sort" /></th>
+                                                                        <th>Status <i
+                                                                                class="fa fa-sort" /></th>
                                                                         <th>Actions</th>
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
-                                                                    <t t-set="counter" t-value="1"/>
-
-                                                                    <t t-foreach="individuals" t-as="individual">
-                                                                        <tr>
-                                                                            <td>
-                                                                                <t t-out="counter"/>
-                                                                            </td>
-                                                                            <td
-                                                                                style="color:#704880; font: normal normal 600 13px/16px Inter;"
-                                                                            >
-                                                                                <t t-out="individual.name" />
-                                                                            </td>
-                                                                            <td>
-                                                                                <t t-out="individual.age" />
-                                                                            </td>
-                                                                            <td>
-                                                                                <t t-out="individual.gender" />
-                                                                            </td>
-                                                                            <td>
-                                                                                <t>Test</t>
-                                                                            </td>
-                                                                            <td>
-                                                                                <t t-if="beneficiary['active']">
-                                                                                    <div
-                                                                                        string="active"
-                                                                                        class="active-button"
-                                                                                    >
-                                                                                        Active</div>
-                                                                                </t>
-                                                                                <t t-else="">
-                                                                                    <div
-                                                                                        string="inactive"
-                                                                                        class="inactive-button"
-                                                                                    >
-                                                                                        Inactive</div>
-                                                                                </t>
-                                                                            </td>
-                                                                            <td>
-                                                                                <button class="btn btn-icon rounded-0" id="mem-update" t-attf-store="{{ individual.id }}" title="Edit">
-                                                                                    <i class="fa fa-pencil"></i>
-                                                                                </button>
-                                                                            </td>
-                                                                        </tr>
-                                                                        <t t-set="counter" t-value="counter + 1"/>
-                                                                        <!-- </t> -->
-                                                                    </t>
                                                                 </tbody>
                                                             </table>
                                                         </div>
                                                     </div>
-
-                                                </t>
-                                                <t t-else="">
-                                                    <div class="no_list">
-                                                        <img
-                                                            src="/g2p_service_provider_benificiary_management/static/src/img/no_mem.png"
-                                                        />
-                                                        <div>
-                                                            <p>No members!</p>
-                                                        </div>
-                                                    </div>
-                                                </t>
-                                                <div class="table-container mem-list">
-                                                    <div class="tables-values-container">
-                                                        <table id="memberlist">
-                                                            <thead>
-                                                                <tr>
-                                                                    <th>Sr.No.</th>
-                                                                    <th>Member Name <i
-                                                                            class="fa fa-sort"
-                                                                        /></th>
-                                                                    <th>Age <i class="fa fa-sort" /></th>
-                                                                    <th>Sex <i class="fa fa-sort" /></th>
-                                                                    <th>Relationship</th>
-                                                                    <th>Status <i class="fa fa-sort" /></th>
-                                                                    <th>Actions</th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                </div>
-                                                <button
-                                                    type="button"
-                                                    data-bs-toggle="modal"
-                                                    data-bs-target="#memberDetailModal"
-                                                    class="btn btn-primary create-new"
-                                                > Add
-                                                    Member
-                                                </button>
+                                                    <button
+                                                        type="button"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#memberDetailModal"
+                                                        class="btn btn-primary create-new"
+                                                    > Add
+                                                        Member
+                                                    </button>
 
                                                 </div>
 
@@ -444,7 +457,8 @@
                                                         class="modal-dialog modal-dialog-centered"
                                                         role="document"
                                                     >
-                                                        <div class="modal-content beneficiary-modal-content">
+                                                        <div
+                                                            class="modal-content beneficiary-modal-content">
                                                             <div
                                                                 class="card-header form-card-header"
                                                                 style="margin:15px"
@@ -457,7 +471,8 @@
                                                                     members</h5>
 
                                                             </div>
-                                                            <div class="modal-body" style="overflow:hidden">
+                                                            <div class="modal-body"
+                                                                style="overflow:hidden">
                                                                 <div class="s_website_form_rows">
                                                                     <div class="row mem-row">
                                                                         <div class="col-lg-4">
@@ -530,7 +545,8 @@
                                                                             </div>
                                                                         </div>
                                                                     </div>
-                                                                    <div class="row input-fields mem-row">
+                                                                    <div
+                                                                        class="row input-fields mem-row">
                                                                         <div class="col-lg-6">
                                                                             <div>
                                                                                 <label
@@ -547,9 +563,9 @@
                                                                                 </label>
                                                                                 <input
                                                                                     type="date"
-                                                                                    id="birthdate"
+                                                                                    id="date-picker"
                                                                                     name="birthdate"
-                                                                                    class="form-control"
+                                                                                    class="form-control date-picker"
                                                                                 />
                                                                             </div>
                                                                         </div>
@@ -574,7 +590,8 @@
                                                                                             class="form-select"
                                                                                             name="gender"
                                                                                         >
-                                                                                            <option value="">
+                                                                                            <option
+                                                                                                value="">
                                                                                                 Select</option>
                                                                                             <t
                                                                                                 t-foreach="gender"
@@ -624,7 +641,8 @@
                                                                                         value="Household head"
                                                                                     >Household
                                                                                         head</option>
-                                                                                    <option value="Spouse">
+                                                                                    <option
+                                                                                        value="Spouse">
                                                                                         Spouse</option>
                                                                                     <option
                                                                                         value="Member/dependent"
@@ -636,7 +654,8 @@
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <div class="card-footer" style="text-align:right">
+                                                            <div class="card-footer"
+                                                                style="text-align:right">
                                                                 <button
                                                                     type="button"
                                                                     class="btn btn-outline-primary modal-cancel-button"
@@ -702,12 +721,13 @@
                 </div>
             </div>
             <script
-            src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"
-        />
+                src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"
+            />
             <script
-            type="text/javascript"
-            src="/g2p_service_provider_benificiary_management/static/src/js/member_form.js"
-        />
+                type="text/javascript"
+                src="/g2p_service_provider_benificiary_management/static/src/js/member_form.js"
+            />
+
         </t>
     </template>
     <!-- Create -->
@@ -750,25 +770,22 @@
                                         id="accordion"
                                         style="width: auto; padding: 0px;"
                                     >
-                                        <div
-                                            class="card-header form-card-header"
-                                            style="padding: 0px;"
-                                            id="household_header"
-                                            data-bs-toggle="collapse"
-                                            data-bs-target="#demographic"
-                                            aria-expanded="true"
-                                            aria-controls="demographic"
-                                        >
-                                            <div class="row">
-                                                <div class="col-md-8">
-                                                    <h5 class="mb-0 form-heading">Household Head
-                                                        Details</h5>
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header">
+                                                <div
+                                                    class="accordion-button card-header form-card-header"
+                                                    style="padding:15px;font-weight:500;"
+                                                    id="household_header"
+                                                    data-bs-toggle="collapse"
+                                                    data-bs-target="#demographic"
+                                                    aria-expanded="true"
+                                                    aria-controls="demographic">
+                                                    Household Head
+                                                    Details
                                                 </div>
-                                                <div class="col-md-4 text-end">
-                                                    <i class="fa fa-fw fa-angle-up up-angle" />
-                                                </div>
-                                            </div>
+                                            </h2>
                                         </div>
+
                                         <div class="card-body" style="padding: 0px;">
                                             <div
                                                 class="s_website_form_rows collapse show"
@@ -779,7 +796,8 @@
                                                 <div class="row">
                                                     <div class="col-lg-8">
                                                         <div class="s_website_form_field">
-                                                            <label class="s_website_form_label" for="name">
+                                                            <label class="s_website_form_label"
+                                                                for="name">
                                                                 <span
                                                                     class="s_website_form_label_content"
                                                                     style="color: #666666;"
@@ -794,6 +812,7 @@
                                                                 name="name"
                                                                 class="form-control"
                                                                 required="required"
+                                                                placeholder="FirstName  MiddleName  LastName"
                                                             />
                                                         </div>
                                                     </div>
@@ -814,28 +833,32 @@
                                                             </label>
                                                             <input
                                                                 type="date"
-                                                                id="birthdate"
+                                                                id="date-picker"
                                                                 name="birthdate"
-                                                                class="form-control"
+                                                                class="form-control date-picker"
                                                             />
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-4">
                                                         <div class="s_website_form_field">
-                                                            <label class="s_website_form_label mb-3">
-                                                                <span class="s_website_form_label_content">
+                                                            <label class="s_website_form_label">
+                                                                <span
+                                                                    class="s_website_form_label_content">
                                                                     Sex</span>
                                                                 <span class="s_website_form_mark"> *</span>
                                                             </label>
                                                             <div class="row">
                                                                 <div class="col">
-                                                                    <select class="form-select" name="gender">
+                                                                    <select class="form-select"
+                                                                        name="gender">
                                                                         <option value="">Select</option>
-                                                                        <t t-foreach="gender" t-as="option">
+                                                                        <t t-foreach="gender"
+                                                                            t-as="option">
                                                                             <option
                                                                                 t-att-value="option.value"
                                                                             >
-                                                                                <t t-esc="option.code" />
+                                                                                <t
+                                                                                    t-esc="option.code" />
                                                                             </option>
                                                                         </t>
                                                                     </select>
@@ -845,29 +868,27 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                           
+
                                             <!-- Member details -->
                                             <div id="member_header">
-                                                <div
-                                                    class="card-header form-card-header collapsed"
-                                                    style="padding: 0px;"
-                                                    data-bs-toggle="collapse"
-                                                    data-bs-target=".members_img"
-                                                    aria-expanded="false"
-                                                    aria-controls="members_img"
-                                                >
-                                                    <div class="row">
-                                                        <div class="col-md-8">
-                                                            <h5 class="mb-0 form-heading">Member
-                                                                Details</h5>
+                                                <div class="accordion-item">
+                                                    <h2 class="accordion-header">
+                                                        <div
+                                                            class="accordion-button collapsed card-header form-card-header"
+                                                            style="padding:15px;font-weight:500;"
+                                                            id="member_collab"
+                                                            data-bs-toggle="collapse"
+                                                            data-bs-target=".members_img"
+                                                            aria-expanded="false"
+                                                            aria-controls="members_img">
+                                                            Member
+                                                            Details
                                                         </div>
-                                                        <div class="col-md-4 text-end">
-                                                            <i class="fa fa-fw fa-angle-up up-angle" />
-                                                        </div>
-                                                    </div>
+                                                    </h2>
                                                 </div>
-                                                
-                                                <div class="members_img collapse" data-bs-parent="#accordion">
+
+                                                <div class="members_img collapse"
+                                                    data-bs-parent="#accordion">
                                                     <div class="table-container mem-list">
                                                         <div class="tables-values-container">
                                                             <table id="memberlist">
@@ -877,34 +898,42 @@
                                                                         <th>Member Name <i
                                                                                 class="fa fa-sort"
                                                                             /></th>
-                                                                        <th>Age <i class="fa fa-sort" /></th>
-                                                                        <th>Sex <i class="fa fa-sort" /></th>
+                                                                        <th>Age <i
+                                                                                class="fa fa-sort" /></th>
+                                                                        <th>Sex <i
+                                                                                class="fa fa-sort" /></th>
                                                                         <th>Relationship</th>
-                                                                        <th>Status <i class="fa fa-sort" /></th>
+                                                                        <th>Status <i
+                                                                                class="fa fa-sort" /></th>
                                                                         <th>Actions</th>
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
-                                                                    <t t-foreach="individuals" t-as="individual">
+                                                                    <t t-foreach="individuals"
+                                                                        t-as="individual">
                                                                         <tr>
                                                                             <td>
                                                                             </td>
                                                                             <td
                                                                                 style="color:#704880; font: normal normal 600 13px/16px Inter;"
                                                                             >
-                                                                                <t t-out="individual.name" />
+                                                                                <t
+                                                                                    t-out="individual.name" />
                                                                             </td>
                                                                             <td>
-                                                                                <t t-out="group['age']" />
+                                                                                <t
+                                                                                    t-out="group['age']" />
                                                                             </td>
                                                                             <td>
-                                                                                <t t-out="group['gender']" />
+                                                                                <t
+                                                                                    t-out="group['gender']" />
                                                                             </td>
                                                                             <td>
                                                                                 <t>Test</t>
                                                                             </td>
                                                                             <td>
-                                                                                <t t-if="group['active']">
+                                                                                <t
+                                                                                    t-if="group['active']">
                                                                                     <div
                                                                                         string="active"
                                                                                         class="active-button"
@@ -923,12 +952,13 @@
                                                                                 <a
                                                                                     t-attf-href="/serviceprovider/individual/update/?mem={{ individual.id }}&amp;group={{ group.id }}"
                                                                                 >
-                                                                                    <button
+                                                                                    <div
                                                                                         class="btn btn-icon rounded-0"
                                                                                         title="Edit"
                                                                                     >
-                                                                                        <i class="fa fa-pencil" />
-                                                                                    </button>
+                                                                                        <i
+                                                                                            class="fa fa-pencil" />
+                                                                                    </div>
                                                                                 </a>
                                                                             </td>
                                                                         </tr>
@@ -972,7 +1002,8 @@
                                                         class="modal-dialog modal-dialog-centered"
                                                         role="document"
                                                     >
-                                                        <div class="modal-content beneficiary-modal-content">
+                                                        <div
+                                                            class="modal-content beneficiary-modal-content">
                                                             <div
                                                                 class="card-header form-card-header"
                                                                 style="margin:15px"
@@ -985,7 +1016,8 @@
                                                                     members</h5>
 
                                                             </div>
-                                                            <div class="modal-body" style="overflow:hidden">
+                                                            <div class="modal-body"
+                                                                style="overflow:hidden">
                                                                 <div class="s_website_form_rows">
                                                                     <div class="row mem-row">
                                                                         <div class="col-lg-4">
@@ -1058,7 +1090,8 @@
                                                                             </div>
                                                                         </div>
                                                                     </div>
-                                                                    <div class="row input-fields mem-row">
+                                                                    <div
+                                                                        class="row input-fields mem-row">
                                                                         <div class="col-lg-6">
                                                                             <div>
                                                                                 <label
@@ -1075,9 +1108,9 @@
                                                                                 </label>
                                                                                 <input
                                                                                     type="date"
-                                                                                    id="birthdate"
+                                                                                    id="date-picker"
                                                                                     name="birthdate"
-                                                                                    class="form-control"
+                                                                                    class="form-control date-picker"
                                                                                 />
                                                                             </div>
                                                                         </div>
@@ -1102,7 +1135,8 @@
                                                                                             class="form-select"
                                                                                             name="gender"
                                                                                         >
-                                                                                            <option value="">
+                                                                                            <option
+                                                                                                value="">
                                                                                                 Select</option>
                                                                                             <t
                                                                                                 t-foreach="gender"
@@ -1152,7 +1186,8 @@
                                                                                         value="Household head"
                                                                                     >Household
                                                                                         head</option>
-                                                                                    <option value="Spouse">
+                                                                                    <option
+                                                                                        value="Spouse">
                                                                                         Spouse</option>
                                                                                     <option
                                                                                         value="Member/dependent"
@@ -1164,7 +1199,8 @@
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <div class="card-footer" style="text-align:right">
+                                                            <div class="card-footer"
+                                                                style="text-align:right">
                                                                 <button
                                                                     type="button"
                                                                     class="btn btn-outline-primary modal-cancel-button"
