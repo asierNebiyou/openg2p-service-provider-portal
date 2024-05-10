@@ -44,10 +44,12 @@ function applySearchFilter(searchValue) {
         const cellValue1 = row.cells[1].innerText.toLowerCase(); // Household Name
         const cellValue2 = row.cells[2].innerText.toLowerCase(); // Region
         const cellValue3 = row.cells[3].innerText.toLowerCase(); // Kebele
+        const cellValue4 = row.cells[6].innerText.toLowerCase(); // enumerator
         return (
             cellValue1.includes(searchValue) ||
             cellValue2.includes(searchValue) ||
-            cellValue3.includes(searchValue)
+            cellValue3.includes(searchValue) ||
+            cellValue4.includes(searchValue)
         );
     });
 }
@@ -145,8 +147,10 @@ allheadercells.forEach(function (th) {
     });
 });
 
+const searchResultCount = document.getElementById("search-result-count");
 const searchInputText = document.getElementById("search-text");
 const searchClearText = document.getElementById("search-text-clear");
+
 searchClearText.style.display = "none";
 
 function handleSearch() {
@@ -161,14 +165,19 @@ function handleSearch() {
         currentPage = 1;
         showPage(currentPage);
         renderPageButtons();
+        // Update search result count
+        searchResultCount.textContent = `Search found ${filteredRows.length} result(s)`;
     } else {
         filteredRows = allRows;
         currentPage = 1;
         showPage(currentPage);
         renderPageButtons();
+        // Clear search result count
+        searchResultCount.textContent = "";
     }
 
     searchClearText.style.display = searchValue ? "block" : "none";
+
 }
 
 searchInputText.addEventListener("input", handleSearch);
