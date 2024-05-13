@@ -230,7 +230,7 @@ td .program-name {
     letter-spacing: 0px;
     color: #783e83;
     opacity: 1;
-    background: rgba(120, 62, 131, 0.10);
+    background: rgba(120, 62, 131, 0.1);
 }
 
 .no-programs {
@@ -1885,11 +1885,11 @@ li div p {
     max-width: 800px;
     max-height: 400px;
 }
-.active-logo{
+.active-logo {
     width: 20px;
     height: 20px;
 }
-.inactive-logo{
+.inactive-logo {
     width: 20px;
     height: 20px;
 }

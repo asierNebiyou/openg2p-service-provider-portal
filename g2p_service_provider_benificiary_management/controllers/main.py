@@ -1,15 +1,23 @@
 import json
 import logging
-from datetime import datetime
 
 from odoo import http
 from odoo.http import request
 
+from odoo.addons.g2p_service_provider_portal_base.controllers.main import ServiceProviderBaseContorller
+
 _logger = logging.getLogger(__name__)
 
 
+class ServiceProviderBaseContorller(ServiceProviderBaseContorller):
+    @http.route(["/serviceprovider/home"], type="http", auth="user", website=True)
+    def portal_home(self, **kwargs):
+        self.check_roles("SERVICEPROVIDER")
+        return request.redirect("/serviceprovider/group")
+
+
 class G2pServiceProviderBenificiaryManagement(http.Controller):
-    @http.route("/serviceprovider/group", type="http", auth="public", website=True)
+    @http.route("/serviceprovider/group", type="http", auth="user", website=True)
     def group_list(self, **kw):
         group = (
             request.env["res.partner"]
@@ -23,9 +31,7 @@ class G2pServiceProviderBenificiaryManagement(http.Controller):
             )
         )
 
-        return request.render(
-            "g2p_service_provider_benificiary_management.group_list", {"groups": group}
-        )
+        return request.render("g2p_service_provider_benificiary_management.group_list", {"groups": group})
 
     @http.route(
         ["/serviceprovider/group/create/"],
@@ -62,12 +68,12 @@ class G2pServiceProviderBenificiaryManagement(http.Controller):
                 if key in beneficiary:
                     beneficiary.write({key: value})
                 else:
-                    _logger.info(f"Ignoring invalid key: {key}")
+                    _logger.error(f"Ignoring invalid key: {key}")
 
             return request.redirect("/serviceprovider/group")
 
         except Exception as e:
-            _logger.info("Error occurred%s" % e)
+            _logger.error("Error occurred%s" % e)
             return request.render(
                 "g2p_service_provider_benificiary_management.error_template",
                 {"error_message": "An error occurred. Please try again later."},
@@ -95,9 +101,7 @@ class G2pServiceProviderBenificiaryManagement(http.Controller):
                 {
                     "beneficiary": beneficiary,
                     "gender": gender,
-                    "individuals": beneficiary.group_membership_ids.mapped(
-                        "individual"
-                    ),
+                    "individuals": beneficiary.group_membership_ids.mapped("individual"),
                 },
             )
         except Exception:
@@ -131,12 +135,12 @@ class G2pServiceProviderBenificiaryManagement(http.Controller):
                 if key in beneficiary:
                     beneficiary.write({key: value})
                 else:
-                    _logger.info(f"Ignoring invalid key: {key}")
+                    _logger.error(f"Ignoring invalid key: {key}")
 
             return request.redirect("/serviceprovider/group")
 
         except Exception as e:
-            _logger.info("Error occurred%s" % e)
+            _logger.error("Error occurred%s" % e)
             return request.render(
                 "g2p_service_provider_benificiary_management.error_template",
                 {"error_message": "An error occurred. Please try again later."},
@@ -157,26 +161,21 @@ class G2pServiceProviderBenificiaryManagement(http.Controller):
             head_individual = None
             # Group creation
             if kw.get("group_id"):
-                group_rec = (
-                    request.env["res.partner"].sudo().browse(int(kw.get("group_id")))
-                )
+                group_rec = request.env["res.partner"].sudo().browse(int(kw.get("group_id")))
             else:
                 if head_name:
                     group_rec = (
                         request.env["res.partner"]
                         .sudo()
-                        .create(
-                            {"name": head_name, "is_registrant": True, "is_group": True}
-                        )
+                        .create({"name": head_name, "is_registrant": True, "is_group": True})
                     )
                     # Head creation
-                    head_name_parts = head_name.split(' ')
+                    head_name_parts = head_name.split(" ")
                     h_given_name = head_name_parts[0]
                     h_family_name = head_name_parts[-1]
 
-                    
                     if len(head_name_parts) > 2:
-                        h_addl_name = ' '.join(head_name_parts[1:-1])
+                        h_addl_name = " ".join(head_name_parts[1:-1])
                     else:
                         h_addl_name = ""
 
@@ -191,6 +190,8 @@ class G2pServiceProviderBenificiaryManagement(http.Controller):
                                 "name": name,
                                 "addl_name": h_addl_name,
                                 "family_name": h_family_name,
+                                "birthdate": kw.get("Household_dob"),
+                                "gender": kw.get("Househol_gender"),
                             }
                         )
                     )
@@ -218,23 +219,19 @@ class G2pServiceProviderBenificiaryManagement(http.Controller):
 
             individual = request.env["res.partner"].sudo().create(partner_data)
 
-           
             # Member creation only if head_individual is created
             group_membership_vals = [(0, 0, {"individual": individual.id, "group": group_rec.id})]
 
             # Add head_individual membership if created
             if head_individual:
-                group_membership_vals.insert(0, (0, 0, {"individual": head_individual.id, "group": group_rec.id}))
+                group_membership_vals.insert(
+                    0, (0, 0, {"individual": head_individual.id, "group": group_rec.id})
+                )
 
-            group_rec.write(
-                {
-                    "group_membership_ids": group_membership_vals
-                }
-            )
+            group_rec.write({"group_membership_ids": group_membership_vals})
 
             member_list = []
             for membership in group_rec.group_membership_ids:
-
                 member_list.append(
                     {
                         "id": membership.individual.id,
@@ -250,7 +247,7 @@ class G2pServiceProviderBenificiaryManagement(http.Controller):
             return json.dumps(res)
 
         except Exception as e:
-            _logger.info("ERROR LOG IN INDIVIDUAL%s", e)
+            _logger.error("ERROR LOG IN INDIVIDUAL%s", e)
 
     @http.route(
         "/serviceprovider/member/update/",
@@ -274,7 +271,7 @@ class G2pServiceProviderBenificiaryManagement(http.Controller):
                 return json.dumps(exist_value)
 
         except Exception as e:
-            _logger.info("ERROR LOG IN UPDATE MEMBER%s", e)
+            _logger.error("ERROR LOG IN UPDATE MEMBER%s", e)
 
     @http.route(
         "/serviceprovider/member/update/submit/",
@@ -292,10 +289,8 @@ class G2pServiceProviderBenificiaryManagement(http.Controller):
                 given_name = kw.get("given_name")
                 family_name = kw.get("family_name")
                 addl_name = kw.get("addl_name")
-                
 
                 name = f"{given_name}, {addl_name} {family_name}"
-                print("name:",name)
 
                 member.sudo().write(
                     {
@@ -307,13 +302,10 @@ class G2pServiceProviderBenificiaryManagement(http.Controller):
                         "gender": kw.get("gender"),
                     }
                 )
-                group = (
-                    request.env["res.partner"].sudo().browse(int(kw.get("group_id")))
-                )
+                group = request.env["res.partner"].sudo().browse(int(kw.get("group_id")))
                 member_list = []
 
                 for membership in group.group_membership_ids:
-                    print("EMBRSHJIP OCUUNT",membership)
                     member_list.append(
                         {
                             "id": membership.individual.id,
@@ -324,12 +316,10 @@ class G2pServiceProviderBenificiaryManagement(http.Controller):
                             "group_id": membership.group.id,
                         }
                     )
-                print("EMBRSHJIP OCUUNT",len(member_list),member_list)
-                
 
                 res["member_list"] = member_list
                 return json.dumps(res)
 
         except Exception as e:
-            _logger.info("Error occurred during member submit: %s", e)
+            _logger.error("Error occurred during member submit: %s", e)
             return json.dumps({"error": "Failed to update member details"})

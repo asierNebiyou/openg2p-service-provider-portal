@@ -18,9 +18,7 @@
         "views/other.xml",
     ],
     "assets": {
-        "web.assets_frontend": [
-            # 'g2p_service_provider_portal_base/static/src/css/portal.css',
-        ],
+        "web.assets_frontend": [],
         "web.assets_common": [],
         "website.assets_wysiwyg": [],
     },
