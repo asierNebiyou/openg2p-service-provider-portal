@@ -1880,7 +1880,10 @@ li div p {
 .mem-row {
     padding: 10px;
 }
-
+.mem-ind-row {
+    padding: 10px;
+    padding-left: 50px;
+}
 #memberDetailModal .modal-dialog {
     max-width: 800px;
     max-height: 400px;
