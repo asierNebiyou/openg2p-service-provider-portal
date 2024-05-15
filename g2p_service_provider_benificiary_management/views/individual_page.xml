@@ -224,6 +224,8 @@
                                                                                         id="given_name"
                                                                                         name="given_name"
                                                                                         class="form-control"
+                                                                                        required="required"
+
                                                                                         t-att-value="beneficiary.given_name"
 
                                                                                     />
@@ -274,7 +276,7 @@
                                                                                         name="family_name"
                                                                                         class="form-control"
                                                                                         t-att-value="beneficiary.family_name"
-
+                                                                                        required="required"
                                                                                     />
                                                                                 </div>
                                                                             </div>
@@ -294,14 +296,12 @@
                                                                 >Date of
                                                                     Birth
                                                                 </span>
-                                                                <span class="s_website_form_mark">
-                                                                    *</span>
                                                             </label>
                                                             <input
                                                                 type="date"
                                                                 id="birthdate"
                                                                 name="birthdate"
-                                                                required="required"
+                                                                t-att-value="beneficiary.birthdate"
                                                                 class="form-control date-picker"
                                                             />
                                                         </div>
@@ -310,9 +310,11 @@
                                                         <div class="s_website_form_field">
                                                             <label class="s_website_form_label">
                                                                 <span class="s_website_form_label_content">
-                                                                    Sex</span>
-                                                                <span class="s_website_form_mark"> *</span>
+                                                                    Gender</span>
                                                             </label>
+                                                            <span class="s_website_form_mark"
+                                                                                        >
+                                                                                            *</span>
                                                             <div class="row">
                                                                 <div class="col">
                                                                     <select
@@ -345,14 +347,12 @@
                                                                     style="color: #666666;"
                                                                 >Email
                                                                 </span>
-                                                                <span class="s_website_form_mark"> *</span>
                                                             </label>
                                                             <input
                                                                 type="text"
                                                                 id="email"
                                                                 name="email"
                                                                 class="form-control"
-                                                                required="required"
                                                                 placeholder="Email"
                                                                 t-att-value="beneficiary.email"
 
@@ -493,6 +493,8 @@
                                                                                         id="given_name"
                                                                                         name="given_name"
                                                                                         class="form-control"
+                                                                                        required="required"
+
                                                                                     />
                                                                                 </div>
                                                                             </div>
@@ -538,6 +540,8 @@
                                                                                         id="family_name"
                                                                                         name="family_name"
                                                                                         class="form-control"
+                                                                                        required="required"
+
                                                                                     />
                                                                                 </div>
                                                                             </div>
@@ -557,14 +561,11 @@
                                                                 >Date of
                                                                     Birth
                                                                 </span>
-                                                                <span class="s_website_form_mark">
-                                                                    *</span>
                                                             </label>
                                                             <input
                                                                 type="date"
                                                                 id="birthdate"
                                                                 name="birthdate"
-                                                                required="required"
                                                                 class="form-control date-picker"
                                                             />
                                                         </div>
@@ -573,9 +574,13 @@
                                                         <div class="s_website_form_field">
                                                             <label class="s_website_form_label">
                                                                 <span class="s_website_form_label_content">
-                                                                    Sex</span>
+                                                                    Gender</span>
                                                                 <span class="s_website_form_mark"> *</span>
                                                             </label>
+                                                            <span
+                                                                                            class="s_website_form_mark"
+                                                                                        >
+                                                                                            *</span>
                                                             <div class="row">
                                                                 <div class="col">
                                                                     <select
@@ -606,14 +611,12 @@
                                                                     style="color: #666666;"
                                                                 >Email
                                                                 </span>
-                                                                <span class="s_website_form_mark"> *</span>
                                                             </label>
                                                             <input
                                                                 type="text"
                                                                 id="email"
                                                                 name="email"
                                                                 class="form-control"
-                                                                required="required"
                                                                 placeholder="Email"
                                                             />
                                                         </div>
