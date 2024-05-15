@@ -170,7 +170,7 @@
                         </ol>
                         <div id="toast-container">
                             <div id="toast-message" />
-                            <button id="toast-close-btn" onclick="hideToast()">
+                            <button type="button" id="toast-close-btn" onclick="hideToast()">
                                 <img
                                     src="/g2p_service_provider_portal_base/static/src/img/close_icon@2x.png"
                                 />
@@ -507,6 +507,7 @@
                                                                                     type="text"
                                                                                     id="given_name"
                                                                                     name="given_name"
+                                                                                    required="required"
                                                                                     class="form-control"
                                                                                 />
                                                                             </div>
@@ -552,6 +553,7 @@
                                                                                     type="text"
                                                                                     id="family_name"
                                                                                     name="family_name"
+                                                                                    required="required"
                                                                                     class="form-control"
                                                                                 />
                                                                             </div>
@@ -580,6 +582,7 @@
                                                                                     type="date"
                                                                                     id="birthdate"
                                                                                     name="birthdate"
+                                                                                    required="required"
                                                                                     class="form-control date-picker"
                                                                                 />
                                                                             </div>
@@ -604,6 +607,7 @@
                                                                                         <select
                                                                                             class="form-select"
                                                                                             name="gender"
+                                                                                            required="required"
                                                                                         >
                                                                                             <option value="">
                                                                                                 Select</option>
@@ -689,6 +693,7 @@
                                                                 <div id="toast-message" />
                                                                 <button
                                                                     id="toast-close-btn"
+                                                                    type="button"
                                                                     onclick="hideToast()"
                                                                 >
                                                                     <img
@@ -723,10 +728,6 @@
                                                 >
                                                     Submit
                                                 </button>
-
-
-
-
                                             </div>
                                         </div>
                                     </div>
@@ -1055,6 +1056,7 @@
                                                                                     type="text"
                                                                                     id="given_name"
                                                                                     name="given_name"
+                                                                                    required="required"
                                                                                     class="form-control"
                                                                                 />
                                                                             </div>
@@ -1100,6 +1102,7 @@
                                                                                     type="text"
                                                                                     id="family_name"
                                                                                     name="family_name"
+                                                                                    required="required"
                                                                                     class="form-control"
                                                                                 />
                                                                             </div>
@@ -1128,6 +1131,7 @@
                                                                                     type="date"
                                                                                     id="birthdate"
                                                                                     name="birthdate"
+                                                                                    required="required"
                                                                                     class="form-control date-picker"
                                                                                 />
                                                                             </div>
@@ -1152,6 +1156,7 @@
                                                                                         <select
                                                                                             class="form-select"
                                                                                             name="gender"
+                                                                                            required="required"
                                                                                         >
                                                                                             <option value="">
                                                                                                 Select</option>
@@ -1237,6 +1242,7 @@
                                                                 <div id="toast-message" />
                                                                 <button
                                                                     id="toast-close-btn"
+                                                                    type="button"
                                                                     onclick="hideToast()"
                                                                 >
                                                                     <img
