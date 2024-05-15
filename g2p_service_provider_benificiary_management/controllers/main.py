@@ -13,7 +13,6 @@ class ServiceProviderBaseContorller(ServiceProviderBaseContorller):
     @http.route(["/serviceprovider/home"], type="http", auth="user", website=True)
     def portal_home(self, **kwargs):
         self.check_roles("SERVICEPROVIDER")
-        # return request.redirect("/serviceprovider/group")
         return request.redirect("/serviceprovider/group")
 
 
@@ -35,7 +34,7 @@ class G2pServiceProviderBenificiaryManagement(http.Controller):
         return request.render("g2p_service_provider_benificiary_management.group_list", {"groups": group})
 
     @http.route(
-        ["/serviceprovider/group/create/"],
+        ["/serviceprovider/group/create"],
         type="http",
         auth="user",
         website=True,
@@ -349,7 +348,7 @@ class G2pServiceProviderBenificiaryManagement(http.Controller):
         website=True,
         csrf=False,
     )
-    def individual_create(self, **kw):
+    def individual_registrar_create(self, **kw):
         gender = request.env["gender.type"].sudo().search([])
         return request.render(
             "g2p_service_provider_benificiary_management.individual_registrant_form_template",
