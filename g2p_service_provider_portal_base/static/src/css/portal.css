@@ -99,13 +99,10 @@ footer#bottom .footer-container .nav {
 .ssp-login-box {
     margin: auto;
     top: 75px;
-    /*left: 461px; */
     width: 444px;
-    /* height: 573px; */
     background: #ffffff 0% 0% no-repeat padding-box;
     box-shadow: 0px 3px 15px #0000000d;
     border-radius: 20px;
-    /* opacity: 1; */
     padding: 10px;
     position: relative;
 }
@@ -117,6 +114,7 @@ footer#bottom .footer-container .nav {
     border-radius: 0px;
     padding: 0px;
 }
+
 .ssp-login-box .bg-100 {
     background: none !important;
     padding: 0px;
@@ -130,51 +128,35 @@ footer#bottom .footer-container .nav {
     position: relative;
     text-align: center;
 }
-.ssp-login-box .card-body,
-.ssp-signup-box .card-body {
+
+.ssp-login-box .card-body {
     padding: 0px;
 }
 
-.ssp-login-box .oe_signup_button {
-    border: 1px solid #494daf;
-}
-
-.ssp-login-box .oe_signup_button a {
-    color: #494daf;
-}
-
-.ssp-login-box .logo-box .ssp-signup-box .logo-box {
+.ssp-login-box .logo-box {
     align-items: center;
 }
+
 .ssp-login-box .logo {
     width: 67%;
     height: 67%;
-
-    /* UI Properties */
     opacity: 1;
     margin-left: 15%;
     margin-right: 15%;
     margin-top: 20px;
 }
 
-.ssp-signup-box .logo {
-    width: 40%;
-    height: 40%;
-    opacity: 1;
-}
-
 .ssp-login-box .field-login label,
-.ssp-login-box .field-password label,
-.ssp-signup-box .field-login label,
-.ssp-signup-box .field-password label {
+.ssp-login-box .field-password label {
     font-weight: bolder;
     font-family: Inter;
+    margin-bottom: 4px;
 }
 
 .ssp-login-box .btn-primary {
     color: #ffffff;
-    background-color: #494daf;
-    border-color: #494daf;
+    background-color: #704880;
+    border-color: #704880;
     border-radius: 6px;
     opacity: 1;
     width: 100%;
@@ -184,15 +166,15 @@ footer#bottom .footer-container .nav {
 
 .ssp-login-box .btn-primary :hover {
     color: #ffffff;
-    background-color: #272dd4;
-    border-color: #272dd4;
+    background-color: #704880;
+    border-color: #704880;
     opacity: 1;
 }
 
-.ssp-login-box .btn-primary :active .ssp-signup-box .btn-primary :active {
+.ssp-login-box .btn-primary :active {
     color: #ffffff;
-    background-color: #272dd4;
-    border-color: #272dd4;
+    background-color: #704880;
+    border-color: #704880;
     opacity: 1;
 }
 
@@ -203,31 +185,29 @@ footer#bottom .footer-container .nav {
 
 .ssp-login-box .btn-primary:not(:disabled):not(.o_wysiwyg_loader):not(.disabled):active {
     color: #ffffff;
-    background-color: #272dd4;
-    border-color: #272dd4;
+    background-color: #704880;
+    border-color: #704880;
     opacity: 1;
 }
+
 .ssp-login-box .reset-password {
     float: right;
 }
+
 .ssp-login-body a {
-    color: #494daf;
+    color: #704880;
 }
+
 .ssp-login-box .form-control {
     border-color: #e3e3e3;
     border-radius: 6px;
+    margin-bottom: 8px;
 }
-.ssp-login-box .list-group-item,
-.ssp-signup-box .list-group-item {
+
+.ssp-login-box .list-group-item {
     border: none;
     font-weight: 600;
     color: #000000;
-}
-.ssp-login-box .oauth-link,
-.ssp-signup-box .oauth-link {
-    border: 1px solid #d8d8d8;
-    border-radius: 6px;
-    background: #ffffff 0% 0% no-repeat padding-box;
 }
 
 .ssp-login-box .oe_login_form {

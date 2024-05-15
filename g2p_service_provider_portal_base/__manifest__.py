@@ -7,7 +7,7 @@
     "website": "https://openg2p.org",
     "license": "Other OSI approved licence",
     "development_status": "Alpha",
-    "depends": ["website"],
+    "depends": ["account", "website"],
     "data": [
         "views/about_us.xml",
         "views/base.xml",
@@ -16,6 +16,7 @@
         "views/login.xml",
         "views/profile.xml",
         "views/other.xml",
+        "views/menu_view.xml",
     ],
     "assets": {
         "web.assets_frontend": [],
