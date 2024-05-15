@@ -365,7 +365,6 @@ class G2pServiceProviderBenificiaryManagement(http.Controller):
         csrf=False,
     )
     def individual_create_submit(self, **kw):
-        print("individual_create_submit", kw)
         try:
             name = ""
             if kw.get("family_name"):
@@ -434,7 +433,6 @@ class G2pServiceProviderBenificiaryManagement(http.Controller):
         csrf=False,
     )
     def update_individual_submit(self, **kw):
-        print("kw", kw)
         try:
             member = request.env["res.partner"].sudo().browse(int(kw.get("group_id")))
             if member:
