@@ -34,7 +34,7 @@ class G2pServiceProviderBenificiaryManagement(http.Controller):
         return request.render("g2p_service_provider_benificiary_management.group_list", {"groups": group})
 
     @http.route(
-        ["/serviceprovider/group/create"],
+        ["/serviceprovider/group/create/"],
         type="http",
         auth="user",
         website=True,
