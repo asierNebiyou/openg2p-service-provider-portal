@@ -111,7 +111,9 @@
                                                 </div>
                                             </td>
                                             <td>
-                                                <a t-attf-href="/serviceprovider/individual/update/{{ group.id }}">
+                                                <a
+                                                    t-attf-href="/serviceprovider/individual/update/{{ group.id }}"
+                                                >
                                                     <button string="Update" type="object" class="view-button">
                                                         Update
                                                     </button>
@@ -167,7 +169,7 @@
                             method="POST"
                             enctype="multipart/form-data"
                         >
-                            <input type="hidden" name="group_id" value="" t-att-value="beneficiary.id"/>
+                            <input type="hidden" name="group_id" value="" t-att-value="beneficiary.id" />
                             <div class="row">
                                 <div class="col-md-12">
                                     <div
@@ -206,78 +208,75 @@
                                                                             <div class="col-lg-4">
                                                                                 <div>
                                                                                     <label
-                                                                                        class="s_website_form_label"
-                                                                                        for="given_name"
-                                                                                    >
+                                                                        class="s_website_form_label"
+                                                                        for="given_name"
+                                                                    >
                                                                                         <span
-                                                                                            class="s_website_form_label_content"
-                                                                                            style="color: #666666;"
-                                                                                        >First
+                                                                            class="s_website_form_label_content"
+                                                                            style="color: #666666;"
+                                                                        >First
                                                                                             Name</span>
                                                                                         <span
-                                                                                            class="s_website_form_mark"
-                                                                                        >
+                                                                            class="s_website_form_mark"
+                                                                        >
                                                                                             *</span>
                                                                                     </label>
                                                                                     <input
-                                                                                        type="text"
-                                                                                        id="given_name"
-                                                                                        name="given_name"
-                                                                                        class="form-control"
-                                                                                        required="required"
-
-                                                                                        t-att-value="beneficiary.given_name"
-
-                                                                                    />
+                                                                        type="text"
+                                                                        id="given_name"
+                                                                        name="given_name"
+                                                                        class="form-control"
+                                                                        required="required"
+                                                                        t-att-value="beneficiary.given_name"
+                                                                    />
                                                                                 </div>
                                                                             </div>
                                                                             <div class="col-lg-4">
                                                                                 <div>
                                                                                     <label
-                                                                                        class="s_website_form_label"
-                                                                                        for="addl_name"
-                                                                                    >
+                                                                        class="s_website_form_label"
+                                                                        for="addl_name"
+                                                                    >
                                                                                         <span
-                                                                                            class="s_website_form_label_content"
-                                                                                            style="color: #666666;"
-                                                                                        >Middle
+                                                                            class="s_website_form_label_content"
+                                                                            style="color: #666666;"
+                                                                        >Middle
                                                                                             Name</span>
 
                                                                                     </label>
                                                                                     <input
-                                                                                        type="text"
-                                                                                        id="addl_name"
-                                                                                        name="addl_name"
-                                                                                        class="form-control"
-                                                                                        t-att-value="beneficiary.addl_name"
-
-                                                                                    />
+                                                                        type="text"
+                                                                        id="addl_name"
+                                                                        name="addl_name"
+                                                                        class="form-control"
+                                                                        t-att-value="beneficiary.addl_name"
+                                                                    />
                                                                                 </div>
                                                                             </div>
                                                                             <div class="col-lg-4">
                                                                                 <div>
                                                                                     <label
-                                                                                        class="s_website_form_label"
-                                                                                        for="family_name"
-                                                                                    >
+                                                                        class="s_website_form_label"
+                                                                        for="family_name"
+                                                                    >
                                                                                         <span
-                                                                                            class="s_website_form_label_content"
-                                                                                            style="color: #666666;"
-                                                                                        >Last
+                                                                            class="s_website_form_label_content"
+                                                                            style="color: #666666;"
+                                                                        >Last
                                                                                             Name</span>
                                                                                         <span
-                                                                                            class="s_website_form_mark"
-                                                                                        >
+                                                                            class="s_website_form_mark"
+                                                                        >
                                                                                             *</span>
                                                                                     </label>
                                                                                     <input
-                                                                                        type="text"
-                                                                                        id="family_name"
-                                                                                        name="family_name"
-                                                                                        class="form-control"
-                                                                                        t-att-value="beneficiary.family_name"
-                                                                                        required="required"
-                                                                                    />
+                                                                        type="text"
+                                                                        id="family_name"
+                                                                        name="family_name"
+                                                                        class="form-control"
+                                                                        t-att-value="beneficiary.family_name"
+                                                                        required="required"
+                                                                    />
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -312,8 +311,7 @@
                                                                 <span class="s_website_form_label_content">
                                                                     Gender</span>
                                                             </label>
-                                                            <span class="s_website_form_mark"
-                                                                                        >
+                                                            <span class="s_website_form_mark">
                                                                                             *</span>
                                                             <div class="row">
                                                                 <div class="col">
@@ -327,7 +325,6 @@
                                                                             <option
                                                                                 t-att-value="option.value"
                                                                                 t-att-selected="option.value == beneficiary.gender"
-
                                                                             >
                                                                                 <t t-esc="option.code" />
                                                                             </option>
@@ -355,7 +352,6 @@
                                                                 class="form-control"
                                                                 placeholder="Email"
                                                                 t-att-value="beneficiary.email"
-
                                                             />
                                                         </div>
                                                     </div>
@@ -475,74 +471,72 @@
                                                                             <div class="col-lg-4">
                                                                                 <div>
                                                                                     <label
-                                                                                        class="s_website_form_label"
-                                                                                        for="given_name"
-                                                                                    >
+                                                                        class="s_website_form_label"
+                                                                        for="given_name"
+                                                                    >
                                                                                         <span
-                                                                                            class="s_website_form_label_content"
-                                                                                            style="color: #666666;"
-                                                                                        >First
+                                                                            class="s_website_form_label_content"
+                                                                            style="color: #666666;"
+                                                                        >First
                                                                                             Name</span>
                                                                                         <span
-                                                                                            class="s_website_form_mark"
-                                                                                        >
+                                                                            class="s_website_form_mark"
+                                                                        >
                                                                                             *</span>
                                                                                     </label>
                                                                                     <input
-                                                                                        type="text"
-                                                                                        id="given_name"
-                                                                                        name="given_name"
-                                                                                        class="form-control"
-                                                                                        required="required"
-
-                                                                                    />
+                                                                        type="text"
+                                                                        id="given_name"
+                                                                        name="given_name"
+                                                                        class="form-control"
+                                                                        required="required"
+                                                                    />
                                                                                 </div>
                                                                             </div>
                                                                             <div class="col-lg-4">
                                                                                 <div>
                                                                                     <label
-                                                                                        class="s_website_form_label"
-                                                                                        for="addl_name"
-                                                                                    >
+                                                                        class="s_website_form_label"
+                                                                        for="addl_name"
+                                                                    >
                                                                                         <span
-                                                                                            class="s_website_form_label_content"
-                                                                                            style="color: #666666;"
-                                                                                        >Middle
+                                                                            class="s_website_form_label_content"
+                                                                            style="color: #666666;"
+                                                                        >Middle
                                                                                             Name</span>
 
                                                                                     </label>
                                                                                     <input
-                                                                                        type="text"
-                                                                                        id="addl_name"
-                                                                                        name="addl_name"
-                                                                                        class="form-control"
-                                                                                    />
+                                                                        type="text"
+                                                                        id="addl_name"
+                                                                        name="addl_name"
+                                                                        class="form-control"
+                                                                    />
                                                                                 </div>
                                                                             </div>
                                                                             <div class="col-lg-4">
                                                                                 <div>
                                                                                     <label
-                                                                                        class="s_website_form_label"
-                                                                                        for="family_name"
-                                                                                    >
+                                                                        class="s_website_form_label"
+                                                                        for="family_name"
+                                                                    >
                                                                                         <span
-                                                                                            class="s_website_form_label_content"
-                                                                                            style="color: #666666;"
-                                                                                        >Last
+                                                                            class="s_website_form_label_content"
+                                                                            style="color: #666666;"
+                                                                        >Last
                                                                                             Name</span>
                                                                                         <span
-                                                                                            class="s_website_form_mark"
-                                                                                        >
+                                                                            class="s_website_form_mark"
+                                                                        >
                                                                                             *</span>
                                                                                     </label>
                                                                                     <input
-                                                                                        type="text"
-                                                                                        id="family_name"
-                                                                                        name="family_name"
-                                                                                        class="form-control"
-                                                                                        required="required"
-
-                                                                                    />
+                                                                        type="text"
+                                                                        id="family_name"
+                                                                        name="family_name"
+                                                                        class="form-control"
+                                                                        required="required"
+                                                                    />
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -577,9 +571,7 @@
                                                                     Gender</span>
                                                                 <span class="s_website_form_mark"> *</span>
                                                             </label>
-                                                            <span
-                                                                                            class="s_website_form_mark"
-                                                                                        >
+                                                            <span class="s_website_form_mark">
                                                                                             *</span>
                                                             <div class="row">
                                                                 <div class="col">
