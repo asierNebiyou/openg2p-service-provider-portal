@@ -273,7 +273,7 @@
                                                                                         id="family_name"
                                                                                         name="family_name"
                                                                                         class="form-control"
-                                                                                        t-att-value="beneficiary.addl_name"
+                                                                                        t-att-value="beneficiary.family_name"
 
                                                                                     />
                                                                                 </div>
@@ -432,7 +432,7 @@
 
                         <form
                             id="creategroupForm"
-                            action="/serviceprovider/individual/create/submit"
+                            action="/serviceprovider/individual/beneficiary/create/submit"
                             method="POST"
                             enctype="multipart/form-data"
                         >

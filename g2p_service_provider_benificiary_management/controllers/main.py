@@ -325,6 +325,7 @@ class G2pServiceProviderBenificiaryManagement(http.Controller):
             _logger.error("Error occurred during member submit: %s", e)
             return json.dumps({"error": "Failed to update member details"})
 
+    ############### controller for individula benficary creation ################
 
     @http.route("/serviceprovider/individual", type="http", auth="user", website=True)
     def individual_list(self, **kw):
@@ -341,7 +342,6 @@ class G2pServiceProviderBenificiaryManagement(http.Controller):
         )
         return request.render("g2p_service_provider_benificiary_management.individual_list", {"individual": individual})
 
-
     @http.route(
         ["/serviceprovider/individual/registrar/create/"],
         type="http",
@@ -357,14 +357,14 @@ class G2pServiceProviderBenificiaryManagement(http.Controller):
         )
 
     @http.route(
-        ["/serviceprovider/individual/create/submit"],
+        ["/serviceprovider/individual/beneficiary/create/submit"],
         type="http",
         auth="user",
         website=True,
         csrf=False,
     )
     def individual_create_submit(self, **kw):
-        print("individual_create_submit",kw)
+        print("individual_create_submit", kw)
         try:
             name = ""
             if kw.get('family_name'):
@@ -424,4 +424,47 @@ class G2pServiceProviderBenificiaryManagement(http.Controller):
             return request.render(
                 "g2p_service_provider_benificiary_management.error_template",
                 {"error_message": "Invalid URL."},
+            )
+
+    @http.route(
+        "/serviceprovider/individual/update/submit",
+        type="http",
+        auth="user",
+        website=True,
+        csrf=False,
+    )
+    def update_individual_submit(self, **kw):
+        print("kw", kw)
+        try:
+            member = request.env["res.partner"].sudo().browse(int(kw.get("group_id")))
+            if member:
+                name = ""
+                if kw.get('family_name'):
+                    name += kw.get('family_name') + ", "
+                if kw.get('given_name'):
+                    name += kw.get('given_name') + " "
+                if kw.get('addl_name'):
+                    name += kw.get('addl_name') + " "
+
+                member.sudo().write(
+                    {
+                        "given_name": kw.get('given_name'),
+                        "addl_name": kw.get('addl_name'),
+                        "family_name": kw.get('family_name'),
+                        "name": name,
+                        "birthdate": kw.get("birthdate"),
+                        "gender": kw.get("gender"),
+                        "email": kw.get("email"),
+
+                    }
+                )
+            return request.redirect("/serviceprovider/individual")
+
+
+        except Exception as e:
+            _logger.error("Error occurred%s" % e)
+            return request.render(
+                "g2p_service_provider_benificiary_management.error_template",
+                {"error_message": "An error occurred. Please try again later."},
+
             )
