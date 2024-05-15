@@ -44,7 +44,7 @@ function applySearchFilter(searchValue) {
         const cellValue1 = row.cells[1].innerText.toLowerCase(); // Household Name
         const cellValue2 = row.cells[2].innerText.toLowerCase(); // Region
         const cellValue3 = row.cells[3].innerText.toLowerCase(); // Kebele
-        const cellValue4 = row.cells[6].innerText.toLowerCase(); // enumerator
+        const cellValue4 = row.cells[6].innerText.toLowerCase(); // Enumerator
         return (
             cellValue1.includes(searchValue) ||
             cellValue2.includes(searchValue) ||
@@ -116,6 +116,7 @@ function compareCellValues(a, b, columnIndex) {
     if (!isNaN(aNumber) && !isNaN(bNumber)) {
         return aNumber - bNumber;
     }
+
     return aCellValue.localeCompare(bCellValue);
 }
 
@@ -177,7 +178,6 @@ function handleSearch() {
     }
 
     searchClearText.style.display = searchValue ? "block" : "none";
-
 }
 
 searchInputText.addEventListener("input", handleSearch);
