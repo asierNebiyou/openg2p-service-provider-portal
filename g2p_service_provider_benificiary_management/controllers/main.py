@@ -13,6 +13,7 @@ class ServiceProviderBaseContorller(ServiceProviderBaseContorller):
     @http.route(["/serviceprovider/home"], type="http", auth="user", website=True)
     def portal_home(self, **kwargs):
         self.check_roles("SERVICEPROVIDER")
+        # return request.redirect("/serviceprovider/group")
         return request.redirect("/serviceprovider/group")
 
 
@@ -323,3 +324,104 @@ class G2pServiceProviderBenificiaryManagement(http.Controller):
         except Exception as e:
             _logger.error("Error occurred during member submit: %s", e)
             return json.dumps({"error": "Failed to update member details"})
+
+
+    @http.route("/serviceprovider/individual", type="http", auth="user", website=True)
+    def individual_list(self, **kw):
+        individual = (
+            request.env["res.partner"]
+            .sudo()
+            .search(
+                [
+                    ("active", "=", True),
+                    ("is_registrant", "=", True),
+                    ("is_group", "=", False),
+                ]
+            )
+        )
+        return request.render("g2p_service_provider_benificiary_management.individual_list", {"individual": individual})
+
+
+    @http.route(
+        ["/serviceprovider/individual/registrar/create/"],
+        type="http",
+        auth="user",
+        website=True,
+        csrf=False,
+    )
+    def individual_create(self, **kw):
+        gender = request.env["gender.type"].sudo().search([])
+        return request.render(
+            "g2p_service_provider_benificiary_management.individual_registrant_form_template",
+            {"gender": gender},
+        )
+
+    @http.route(
+        ["/serviceprovider/individual/create/submit"],
+        type="http",
+        auth="user",
+        website=True,
+        csrf=False,
+    )
+    def individual_create_submit(self, **kw):
+        print("individual_create_submit",kw)
+        try:
+            name = ""
+            if kw.get('family_name'):
+                name += kw.get('family_name') + ", "
+            if kw.get('given_name'):
+                name += kw.get('given_name') + " "
+            if kw.get('addl_name'):
+                name += kw.get('addl_name') + " "
+            request.env["res.partner"].sudo().create(
+                {
+                    "given_name": kw.get('given_name'),
+                    "addl_name": kw.get('addl_name'),
+                    "family_name": kw.get('family_name'),
+                    "name": name,
+                    "birthdate": kw.get("birthdate"),
+                    "gender": kw.get("gender"),
+                    "email": kw.get("email"),
+                    'is_registrant': True,
+                    'is_group': False
+
+                })
+            return request.redirect("/serviceprovider/individual")
+
+        except Exception as e:
+            _logger.error("Error occurred%s" % e)
+            return request.render(
+                "g2p_service_provider_benificiary_management.error_template",
+                {"error_message": "An error occurred. Please try again later."},
+
+            )
+
+    @http.route(
+        ["/serviceprovider/individual/update/<int:_id>"],
+        type="http",
+        auth="user",
+        website=True,
+        csrf=False,
+    )
+    def indvidual_update(self, _id, **kw):
+        try:
+            gender = request.env["gender.type"].sudo().search([])
+            beneficiary = request.env["res.partner"].sudo().browse(_id)
+            if not beneficiary:
+                return request.render(
+                    "g2p_service_provider_benificiary_management.error_template",
+                    {"error_message": "Beneficiary not found."},
+                )
+
+            return request.render(
+                "g2p_service_provider_benificiary_management.individual_update_form_template",
+                {
+                    "beneficiary": beneficiary,
+                    "gender": gender,
+                },
+            )
+        except Exception:
+            return request.render(
+                "g2p_service_provider_benificiary_management.error_template",
+                {"error_message": "Invalid URL."},
+            )
