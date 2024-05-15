@@ -5,6 +5,7 @@ const tbody = alltable.getElementsByTagName("tbody");
 const totalRow = tbody[0].children.length;
 const itemsPerPage = 7;
 let currentPage = 1;
+
 function addTableSrNo() {
     for (let i = 0; i < totalRow; i++) {
         tbody[0].children[i].firstElementChild.innerText = i + 1;

@@ -267,6 +267,7 @@ class G2pServiceProviderBenificiaryManagement(http.Controller):
                     "family_name": beneficiary.family_name,
                     "dob": str(beneficiary.birthdate),
                     "gender": beneficiary.gender,
+                    "id": beneficiary.id,
                 }
                 return json.dumps(exist_value)
 
@@ -283,6 +284,7 @@ class G2pServiceProviderBenificiaryManagement(http.Controller):
     def update_member_submit(self, **kw):
         try:
             member = request.env["res.partner"].sudo().browse(int(kw.get("member_id")))
+
             res = dict()
             if member:
                 # birthdate = datetime.strptime(kw["birthdate"], "%Y-%m-%d").date()
@@ -302,21 +304,19 @@ class G2pServiceProviderBenificiaryManagement(http.Controller):
                         "gender": kw.get("gender"),
                     }
                 )
-                group = request.env["res.partner"].sudo().browse(int(kw.get("group_id")))
+                # group = request.env["res.partner"].sudo().browse(int(kw.get("group_id")))
                 member_list = []
 
-                for membership in group.group_membership_ids:
+                for membership in member:
                     member_list.append(
                         {
-                            "id": membership.individual.id,
-                            "name": membership.individual.name,
-                            "age": membership.individual.age,
-                            "gender": membership.individual.gender,
-                            "active": membership.individual.active,
-                            "group_id": membership.group.id,
+                            "id": membership.id,
+                            "name": membership.name,
+                            "age": membership.age,
+                            "gender": membership.gender,
+                            "active": membership.active,
                         }
                     )
-
                 res["member_list"] = member_list
                 return json.dumps(res)
 
