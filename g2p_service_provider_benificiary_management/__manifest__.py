@@ -17,6 +17,7 @@
         "views/error_page.xml",
         "views/group_template.xml",
         "views/success_page.xml",
+        "views/individual_page.xml",
     ],
     "assets": {
         "web.assets_frontend": [
