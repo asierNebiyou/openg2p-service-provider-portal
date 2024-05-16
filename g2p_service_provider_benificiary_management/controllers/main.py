@@ -373,13 +373,18 @@ class G2pServiceProviderBenificiaryManagement(http.Controller):
                 name += kw.get("given_name") + " "
             if kw.get("addl_name"):
                 name += kw.get("addl_name") + " "
+            if kw.get("birthdate") == '':
+                    birthdate = False
+            else:
+                    birthdate = kw.get("birthdate")        
+                
             request.env["res.partner"].sudo().create(
                 {
                     "given_name": kw.get("given_name"),
                     "addl_name": kw.get("addl_name"),
                     "family_name": kw.get("family_name"),
                     "name": name,
-                    "birthdate": kw.get("birthdate"),
+                    "birthdate": birthdate,
                     "gender": kw.get("gender"),
                     "email": kw.get("email"),
                     "is_registrant": True,
@@ -443,6 +448,10 @@ class G2pServiceProviderBenificiaryManagement(http.Controller):
                     name += kw.get("given_name") + " "
                 if kw.get("addl_name"):
                     name += kw.get("addl_name") + " "
+                if kw.get("birthdate") == '':
+                    birthdate = False
+                else:
+                    birthdate = kw.get("birthdate")    
 
                 member.sudo().write(
                     {
@@ -450,7 +459,7 @@ class G2pServiceProviderBenificiaryManagement(http.Controller):
                         "addl_name": kw.get("addl_name"),
                         "family_name": kw.get("family_name"),
                         "name": name,
-                        "birthdate": kw.get("birthdate"),
+                        "birthdate": birthdate,
                         "gender": kw.get("gender"),
                         "email": kw.get("email"),
                     }
