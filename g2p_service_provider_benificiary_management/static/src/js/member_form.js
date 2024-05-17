@@ -7,28 +7,33 @@ $(document).ready(function () {
     });
 });
 
-// eslint-disable-next-line no-unused-vars
 function validateForm(isCreateForm) {
     var requiredFields = document.querySelectorAll(".s_website_form_field [required]");
     var isValid = true;
 
     requiredFields.forEach(function (field) {
-        if (!field.value.trim()) {
+        if (!field.value.trim() && field.offsetWidth > 0 && field.offsetHeight > 0) {
+            // If the field is empty, display an error message next to the field
             var errorMessage = document.createElement("span");
             errorMessage.className = "error-message";
             errorMessage.textContent = "This field is required";
             errorMessage.style.color = "red";
 
+            // Check if an error message already exists for the field
             var existingErrorMessage = field.parentNode.querySelector(".error-message");
             if (existingErrorMessage) {
+                // If an error message already exists, replace it
                 field.parentNode.replaceChild(errorMessage, existingErrorMessage);
             } else {
+                // Otherwise, insert the error message after the field
                 field.parentNode.insertBefore(errorMessage, field.nextSibling);
             }
 
+            // Add red border to indicate the missing field
             field.style.border = "1px solid red";
             isValid = false;
         } else {
+            // If the field is filled, remove any previous error message and styling
             var existingErrorMessage = field.parentNode.querySelector(".error-message");
             if (existingErrorMessage) {
                 existingErrorMessage.parentNode.removeChild(existingErrorMessage);
@@ -38,8 +43,10 @@ function validateForm(isCreateForm) {
     });
 
     if (isValid && isCreateForm) {
+        // If all required fields are filled and it's a create form, submit the form
         document.getElementById("creategroupForm").submit();
     } else if (isValid && !isCreateForm) {
+        // If all required fields are filled and it's not a create form, submit the form
         document.getElementById("updategroupForm").submit();
     }
 }
@@ -51,7 +58,6 @@ function showToast(message) {
     toast_container.css("display", "block");
 }
 
-// eslint-disable-next-line no-unused-vars
 function hideToast() {
     const toast_container = $("#memberDetailModal #toast-container");
     toast_container.css("display", "none");
@@ -60,22 +66,11 @@ function hideToast() {
 function resetFormFields() {
     $("#memberDetailModal input, #memberDetailModal select").val("");
 }
-// Serial no
-const alltable = document.getElementById("memberlist");
-const tbody = alltable.getElementsByTagName("tbody");
-const totalRow = tbody[0].children.length;
-
-function addTableSrNo() {
-    for (let i = 0; i < totalRow; i++) {
-        tbody[0].children[i].firstElementChild.innerText = i + 1;
-    }
-}
-// END serial no
 
 // Replace button
 $('[data-bs-target="#memberDetailModal"]').on("click", function () {
     $("#update-member-btn").replaceWith(
-        '<button  id="member_submit" type="button" class="btn btn-primary create-new">Add</button>'
+        '<div id="member_submit" type="button" class="btn btn-primary create-new">Add</div>'
     );
     resetFormFields();
 });
@@ -92,6 +87,7 @@ $(document).on("click", "#member_submit", function () {
     var middleName = $("#memberDetailModal #addl_name").val();
     var lastName = $("#memberDetailModal #family_name").val();
     var dob = $("#memberDetailModal #birthdate").val();
+    console.log("DOB###########", dob, Householddob);
     var gender = $('#memberDetailModal select[name="gender"]').val();
     var relationship = $('#memberDetailModal select[name="relationship"]').val();
     var isValid = true;
@@ -179,7 +175,7 @@ $(document).on("click", "#member_submit", function () {
                             "</div>" +
                             "</td>" +
                             "<td>" +
-                            '<button class="btn btn-icon rounded-0" type="button" id="mem-update" store="' +
+                            '<button class="btn btn-icon rounded-0" id="mem-update" store="' +
                             member.id +
                             '" title="Edit">' +
                             '<i class="fa fa-pencil"></i>' +
@@ -205,7 +201,6 @@ $(document).on("click", "#member_submit", function () {
 $(document).on("click", "#mem-update", function () {
     var memberId = $(this).attr("store");
     var modal = $("#memberDetailModal");
-
     $.ajax({
         url: "/serviceprovider/member/update/",
         method: "POST",
@@ -223,11 +218,10 @@ $(document).on("click", "#mem-update", function () {
 
             // Replace button
             $("#member_submit").replaceWith(
-                '<button type="button" id="update-member-btn" store="' +
-                    response.id +
-                    '" class="btn btn-primary create-new">Update</button>'
+                '<div id="update-member-btn" store="' +
+                    memberId +
+                    '" class="btn btn-primary create-new">Update</div>'
             );
-            $("#update-member-btn").attr("store", response.id);
 
             // Show the modal
             modal.modal("show");
@@ -287,11 +281,14 @@ $(document).on("click", "#update-member-btn", function () {
             // Check if member_list exists in the response
             if (response && response.member_list) {
                 var member_list = response.member_list;
-
                 $("#memberDetailModal").modal("hide");
 
-                member_list.forEach(function (member) {
-                    var serialNumber = 0;
+                // Get the table body
+                var tableBody = $("#memberlist tbody");
+                tableBody.empty();
+
+                member_list.forEach(function (member, index) {
+                    var serialNumber = index + 1;
                     var newRowHtml =
                         "<tr>" +
                         "<td>" +
@@ -315,19 +312,16 @@ $(document).on("click", "#update-member-btn", function () {
                         "</div>" +
                         "</td>" +
                         "<td>" +
-                        '<button class="btn btn-icon rounded-0" type="button" id="mem-update" store="' +
+                        '<button class="btn btn-icon rounded-0" id="mem-update" store="' +
                         member.id +
                         '" title="Edit">' +
                         '<i class="fa fa-pencil"></i>' +
                         "</button>" +
                         "</td>" +
                         "</tr>";
-
-                    $("#mem-update[store='" + memberId + "']")
-                        .closest("tr")
-                        .replaceWith(newRowHtml);
+                    console.log("newRowHtml########", newRowHtml);
+                    tableBody.append(newRowHtml);
                 });
-                addTableSrNo();
             } else {
                 console.error("FINAL Member list not found in the response.");
             }
