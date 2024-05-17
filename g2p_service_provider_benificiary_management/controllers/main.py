@@ -43,18 +43,25 @@ class G2pServiceProviderBenificiaryManagement(http.Controller):
     def group_create(self, **kw):
         _logger.info("######################")
         gender = request.env["gender.type"].sudo().search([])
-        support_in_displacement_situation = request.env["g2p.support_displacement_situation"].sudo().search([])
-        prevents_financial_provider_access=request.env["g2p.prevents_financial_provider_access"].sudo().search([])
-        priority_needs=request.env["g2p.priority_needs"].sudo().search([])
-        _logger.info("########## support_in_displacement_situation %s############",support_in_displacement_situation)
+        support_in_displacement_situation = (
+            request.env["g2p.support_displacement_situation"].sudo().search([])
+        )
+        prevents_financial_provider_access = (
+            request.env["g2p.prevents_financial_provider_access"].sudo().search([])
+        )
+        priority_needs = request.env["g2p.priority_needs"].sudo().search([])
+        _logger.info(
+            "########## support_in_displacement_situation %s############", support_in_displacement_situation
+        )
 
         return request.render(
             "g2p_service_provider_benificiary_management.group_create_form_template",
-            {"gender": gender,
-             "support_in_displacement_situation":support_in_displacement_situation,
-             "prevents_financial_provider_access":prevents_financial_provider_access,
-             "priority_needs":priority_needs
-             },
+            {
+                "gender": gender,
+                "support_in_displacement_situation": support_in_displacement_situation,
+                "prevents_financial_provider_access": prevents_financial_provider_access,
+                "priority_needs": priority_needs,
+            },
         )
 
     @http.route(
@@ -67,39 +74,45 @@ class G2pServiceProviderBenificiaryManagement(http.Controller):
     def group_create_submit(self, **kw):
         _logger.info("#########  group_create_submit #############")
         try:
-                        name = kw['name']
-                        support_in_displacement_situation = list(map(int, request.httprequest.form.getlist('support_in_displacement_situation')))
-                        priority_needs = list(map(int, request.httprequest.form.getlist('priority_needs')))
-                        prevents_financial_provider_access = list(map(int, request.httprequest.form.getlist('prevents_financial_provider_access')))
+            name = kw["name"]
+            support_in_displacement_situation = list(
+                map(int, request.httprequest.form.getlist("support_in_displacement_situation"))
+            )
+            priority_needs = list(map(int, request.httprequest.form.getlist("priority_needs")))
+            prevents_financial_provider_access = list(
+                map(int, request.httprequest.form.getlist("prevents_financial_provider_access"))
+            )
 
-                        group_id = request.env["res.partner"].create({
-                            "name": name,
-                            "is_registrant": True,
-                            "is_group": True
-                        })
+            group_id = request.env["res.partner"].create(
+                {"name": name, "is_registrant": True, "is_group": True}
+            )
 
-                        beneficiary_id = group_id.id
-                        beneficiary = request.env["res.partner"].sudo().browse(beneficiary_id)
-                        beneficiary['support_in_displacement_situation'] = [(6,0, support_in_displacement_situation)]
-                        beneficiary['priority_needs']=[(6,0, priority_needs)]
-                        beneficiary['prevents_financial_provider_access']=[(6,0, prevents_financial_provider_access)]
+            beneficiary_id = group_id.id
+            beneficiary = request.env["res.partner"].sudo().browse(beneficiary_id)
+            beneficiary["support_in_displacement_situation"] = [(6, 0, support_in_displacement_situation)]
+            beneficiary["priority_needs"] = [(6, 0, priority_needs)]
+            beneficiary["prevents_financial_provider_access"] = [(6, 0, prevents_financial_provider_access)]
 
-                        if not beneficiary:
-                            return request.render(
-                                "g2p_service_provider_benificiary_management.error_template",
-                                {"error_message": "Beneficiary not found."},
-                            )
+            if not beneficiary:
+                return request.render(
+                    "g2p_service_provider_benificiary_management.error_template",
+                    {"error_message": "Beneficiary not found."},
+                )
 
-                        for key, value in kw.items():
-                            _logger.info("####### key:--- %s########## Value -- %s######", key, value)
-                            if key in ('support_in_displacement_situation','priority_needs','prevents_financial_provider_access'):
-                                continue
-                            if key in beneficiary:
-                                beneficiary.write({key: value})
-                            else:
-                                _logger.error(f"Ignoring invalid key: {key}")
+            for key, value in kw.items():
+                _logger.info("####### key:--- %s########## Value -- %s######", key, value)
+                if key in (
+                    "support_in_displacement_situation",
+                    "priority_needs",
+                    "prevents_financial_provider_access",
+                ):
+                    continue
+                if key in beneficiary:
+                    beneficiary.write({key: value})
+                else:
+                    _logger.error(f"Ignoring invalid key: {key}")
 
-                        return request.redirect("/serviceprovider/group")
+            return request.redirect("/serviceprovider/group")
 
         except Exception as e:
             _logger.error("Error occurred%s" % e)
@@ -107,6 +120,7 @@ class G2pServiceProviderBenificiaryManagement(http.Controller):
                 "g2p_service_provider_benificiary_management.error_template",
                 {"error_message": "An error occurred. Please try again later."},
             )
+
     @http.route(
         ["/serviceprovider/group/update/<int:_id>"],
         type="http",
@@ -116,11 +130,14 @@ class G2pServiceProviderBenificiaryManagement(http.Controller):
     )
     def group_update(self, _id, **kw):
         try:
-
             gender = request.env["gender.type"].sudo().search([])
             beneficiary = request.env["res.partner"].sudo().browse(_id)
-            prevents_financial_provider_access = request.env["g2p.prevents_financial_provider_access"].sudo().search([])
-            support_in_displacement_situation = request.env["g2p.support_displacement_situation"].sudo().search([])
+            prevents_financial_provider_access = (
+                request.env["g2p.prevents_financial_provider_access"].sudo().search([])
+            )
+            support_in_displacement_situation = (
+                request.env["g2p.support_displacement_situation"].sudo().search([])
+            )
             priority_needs = request.env["g2p.priority_needs"].sudo().search([])
 
             if not beneficiary:
@@ -135,9 +152,9 @@ class G2pServiceProviderBenificiaryManagement(http.Controller):
                     "beneficiary": beneficiary,
                     "gender": gender,
                     "individuals": beneficiary.group_membership_ids.mapped("individual"),
-                    "prevents_financial_provider_access":prevents_financial_provider_access,
-                    "support_in_displacement_situation":support_in_displacement_situation,
-                    "priority_needs":priority_needs
+                    "prevents_financial_provider_access": prevents_financial_provider_access,
+                    "support_in_displacement_situation": support_in_displacement_situation,
+                    "priority_needs": priority_needs,
                 },
             )
         except Exception:
@@ -157,15 +174,17 @@ class G2pServiceProviderBenificiaryManagement(http.Controller):
         try:
             beneficiary_id = int(kw.get("group_id"))
             support_in_displacement_situation = list(
-                map(int, request.httprequest.form.getlist('support_in_displacement_situation')))
-            priority_needs = list(map(int, request.httprequest.form.getlist('priority_needs')))
+                map(int, request.httprequest.form.getlist("support_in_displacement_situation"))
+            )
+            priority_needs = list(map(int, request.httprequest.form.getlist("priority_needs")))
             prevents_financial_provider_access = list(
-                map(int, request.httprequest.form.getlist('prevents_financial_provider_access')))
+                map(int, request.httprequest.form.getlist("prevents_financial_provider_access"))
+            )
 
             beneficiary = request.env["res.partner"].sudo().browse(beneficiary_id)
-            beneficiary['support_in_displacement_situation'] = [(6, 0, support_in_displacement_situation)]
-            beneficiary['priority_needs'] = [(6, 0, priority_needs)]
-            beneficiary['prevents_financial_provider_access'] = [(6, 0, prevents_financial_provider_access)]
+            beneficiary["support_in_displacement_situation"] = [(6, 0, support_in_displacement_situation)]
+            beneficiary["priority_needs"] = [(6, 0, priority_needs)]
+            beneficiary["prevents_financial_provider_access"] = [(6, 0, prevents_financial_provider_access)]
             if not beneficiary:
                 return request.render(
                     "g2p_service_provider_benificiary_management.error_template",
@@ -177,7 +196,11 @@ class G2pServiceProviderBenificiaryManagement(http.Controller):
 
             for key, value in kw.items():
                 _logger.info("####### key:--- %s########## Value -- %s######", key, value)
-                if key in ('support_in_displacement_situation', 'priority_needs', 'prevents_financial_provider_access'):
+                if key in (
+                    "support_in_displacement_situation",
+                    "priority_needs",
+                    "prevents_financial_provider_access",
+                ):
                     continue
                 if key in beneficiary:
                     beneficiary.write({key: value})
