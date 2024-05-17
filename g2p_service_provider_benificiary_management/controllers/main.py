@@ -41,10 +41,20 @@ class G2pServiceProviderBenificiaryManagement(http.Controller):
         csrf=False,
     )
     def group_create(self, **kw):
+        _logger.info("######################")
         gender = request.env["gender.type"].sudo().search([])
+        support_in_displacement_situation = request.env["g2p.support_displacement_situation"].sudo().search([])
+        prevents_financial_provider_access=request.env["g2p.prevents_financial_provider_access"].sudo().search([])
+        priority_needs=request.env["g2p.priority_needs"].sudo().search([])
+        _logger.info("########## support_in_displacement_situation %s############",support_in_displacement_situation)
+
         return request.render(
             "g2p_service_provider_benificiary_management.group_create_form_template",
-            {"gender": gender},
+            {"gender": gender,
+             "support_in_displacement_situation":support_in_displacement_situation,
+             "prevents_financial_provider_access":prevents_financial_provider_access,
+             "priority_needs":priority_needs
+             },
         )
 
     @http.route(
@@ -55,22 +65,41 @@ class G2pServiceProviderBenificiaryManagement(http.Controller):
         csrf=False,
     )
     def group_create_submit(self, **kw):
+        _logger.info("#########  group_create_submit #############")
         try:
-            beneficiary_id = int(kw.get("group_id"))
-            beneficiary = request.env["res.partner"].sudo().browse(beneficiary_id)
-            if not beneficiary:
-                return request.render(
-                    "g2p_service_provider_benificiary_management.error_template",
-                    {"error_message": "Beneficiary not found."},
-                )
+                        name = kw['name']
+                        support_in_displacement_situation = list(map(int, request.httprequest.form.getlist('support_in_displacement_situation')))
+                        priority_needs = list(map(int, request.httprequest.form.getlist('priority_needs')))
+                        prevents_financial_provider_access = list(map(int, request.httprequest.form.getlist('prevents_financial_provider_access')))
 
-            for key, value in kw.items():
-                if key in beneficiary:
-                    beneficiary.write({key: value})
-                else:
-                    _logger.error(f"Ignoring invalid key: {key}")
+                        group_id = request.env["res.partner"].create({
+                            "name": name,
+                            "is_registrant": True,
+                            "is_group": True
+                        })
 
-            return request.redirect("/serviceprovider/group")
+                        beneficiary_id = group_id.id
+                        beneficiary = request.env["res.partner"].sudo().browse(beneficiary_id)
+                        beneficiary['support_in_displacement_situation'] = [(6,0, support_in_displacement_situation)]
+                        beneficiary['priority_needs']=[(6,0, priority_needs)]
+                        beneficiary['prevents_financial_provider_access']=[(6,0, prevents_financial_provider_access)]
+
+                        if not beneficiary:
+                            return request.render(
+                                "g2p_service_provider_benificiary_management.error_template",
+                                {"error_message": "Beneficiary not found."},
+                            )
+
+                        for key, value in kw.items():
+                            _logger.info("####### key:--- %s########## Value -- %s######", key, value)
+                            if key in ('support_in_displacement_situation','priority_needs','prevents_financial_provider_access'):
+                                continue
+                            if key in beneficiary:
+                                beneficiary.write({key: value})
+                            else:
+                                _logger.error(f"Ignoring invalid key: {key}")
+
+                        return request.redirect("/serviceprovider/group")
 
         except Exception as e:
             _logger.error("Error occurred%s" % e)
@@ -78,7 +107,6 @@ class G2pServiceProviderBenificiaryManagement(http.Controller):
                 "g2p_service_provider_benificiary_management.error_template",
                 {"error_message": "An error occurred. Please try again later."},
             )
-
     @http.route(
         ["/serviceprovider/group/update/<int:_id>"],
         type="http",
@@ -88,8 +116,13 @@ class G2pServiceProviderBenificiaryManagement(http.Controller):
     )
     def group_update(self, _id, **kw):
         try:
+
             gender = request.env["gender.type"].sudo().search([])
             beneficiary = request.env["res.partner"].sudo().browse(_id)
+            prevents_financial_provider_access = request.env["g2p.prevents_financial_provider_access"].sudo().search([])
+            support_in_displacement_situation = request.env["g2p.support_displacement_situation"].sudo().search([])
+            priority_needs = request.env["g2p.priority_needs"].sudo().search([])
+
             if not beneficiary:
                 return request.render(
                     "g2p_service_provider_benificiary_management.error_template",
@@ -102,6 +135,9 @@ class G2pServiceProviderBenificiaryManagement(http.Controller):
                     "beneficiary": beneficiary,
                     "gender": gender,
                     "individuals": beneficiary.group_membership_ids.mapped("individual"),
+                    "prevents_financial_provider_access":prevents_financial_provider_access,
+                    "support_in_displacement_situation":support_in_displacement_situation,
+                    "priority_needs":priority_needs
                 },
             )
         except Exception:
@@ -120,8 +156,16 @@ class G2pServiceProviderBenificiaryManagement(http.Controller):
     def group_submit(self, **kw):
         try:
             beneficiary_id = int(kw.get("group_id"))
+            support_in_displacement_situation = list(
+                map(int, request.httprequest.form.getlist('support_in_displacement_situation')))
+            priority_needs = list(map(int, request.httprequest.form.getlist('priority_needs')))
+            prevents_financial_provider_access = list(
+                map(int, request.httprequest.form.getlist('prevents_financial_provider_access')))
 
             beneficiary = request.env["res.partner"].sudo().browse(beneficiary_id)
+            beneficiary['support_in_displacement_situation'] = [(6, 0, support_in_displacement_situation)]
+            beneficiary['priority_needs'] = [(6, 0, priority_needs)]
+            beneficiary['prevents_financial_provider_access'] = [(6, 0, prevents_financial_provider_access)]
             if not beneficiary:
                 return request.render(
                     "g2p_service_provider_benificiary_management.error_template",
@@ -132,6 +176,9 @@ class G2pServiceProviderBenificiaryManagement(http.Controller):
                 kw.pop("relationship")
 
             for key, value in kw.items():
+                _logger.info("####### key:--- %s########## Value -- %s######", key, value)
+                if key in ('support_in_displacement_situation', 'priority_needs', 'prevents_financial_provider_access'):
+                    continue
                 if key in beneficiary:
                     beneficiary.write({key: value})
                 else:
@@ -267,7 +314,6 @@ class G2pServiceProviderBenificiaryManagement(http.Controller):
                     "family_name": beneficiary.family_name,
                     "dob": str(beneficiary.birthdate),
                     "gender": beneficiary.gender,
-                    "id": beneficiary.id,
                 }
                 return json.dumps(exist_value)
 
@@ -284,7 +330,6 @@ class G2pServiceProviderBenificiaryManagement(http.Controller):
     def update_member_submit(self, **kw):
         try:
             member = request.env["res.partner"].sudo().browse(int(kw.get("member_id")))
-
             res = dict()
             if member:
                 # birthdate = datetime.strptime(kw["birthdate"], "%Y-%m-%d").date()
@@ -304,171 +349,24 @@ class G2pServiceProviderBenificiaryManagement(http.Controller):
                         "gender": kw.get("gender"),
                     }
                 )
-                # group = request.env["res.partner"].sudo().browse(int(kw.get("group_id")))
+                group = request.env["res.partner"].sudo().browse(int(kw.get("group_id")))
                 member_list = []
 
-                for membership in member:
+                for membership in group.group_membership_ids:
                     member_list.append(
                         {
-                            "id": membership.id,
-                            "name": membership.name,
-                            "age": membership.age,
-                            "gender": membership.gender,
-                            "active": membership.active,
+                            "id": membership.individual.id,
+                            "name": membership.individual.name,
+                            "age": membership.individual.age,
+                            "gender": membership.individual.gender,
+                            "active": membership.individual.active,
+                            "group_id": membership.group.id,
                         }
                     )
+
                 res["member_list"] = member_list
                 return json.dumps(res)
 
         except Exception as e:
             _logger.error("Error occurred during member submit: %s", e)
             return json.dumps({"error": "Failed to update member details"})
-
-    ############### controller for individula benficary creation ################
-
-    @http.route("/serviceprovider/individual", type="http", auth="user", website=True)
-    def individual_list(self, **kw):
-        individual = (
-            request.env["res.partner"]
-            .sudo()
-            .search(
-                [
-                    ("active", "=", True),
-                    ("is_registrant", "=", True),
-                    ("is_group", "=", False),
-                ]
-            )
-        )
-        return request.render(
-            "g2p_service_provider_benificiary_management.individual_list", {"individual": individual}
-        )
-
-    @http.route(
-        ["/serviceprovider/individual/registrar/create/"],
-        type="http",
-        auth="user",
-        website=True,
-        csrf=False,
-    )
-    def individual_registrar_create(self, **kw):
-        gender = request.env["gender.type"].sudo().search([])
-        return request.render(
-            "g2p_service_provider_benificiary_management.individual_registrant_form_template",
-            {"gender": gender},
-        )
-
-    @http.route(
-        ["/serviceprovider/individual/beneficiary/create/submit"],
-        type="http",
-        auth="user",
-        website=True,
-        csrf=False,
-    )
-    def individual_create_submit(self, **kw):
-        try:
-            name = ""
-            if kw.get("family_name"):
-                name += kw.get("family_name") + ", "
-            if kw.get("given_name"):
-                name += kw.get("given_name") + " "
-            if kw.get("addl_name"):
-                name += kw.get("addl_name") + " "
-            if kw.get("birthdate") == "":
-                birthdate = False
-            else:
-                birthdate = kw.get("birthdate")
-
-            request.env["res.partner"].sudo().create(
-                {
-                    "given_name": kw.get("given_name"),
-                    "addl_name": kw.get("addl_name"),
-                    "family_name": kw.get("family_name"),
-                    "name": name,
-                    "birthdate": birthdate,
-                    "gender": kw.get("gender"),
-                    "email": kw.get("email"),
-                    "is_registrant": True,
-                    "is_group": False,
-                }
-            )
-            return request.redirect("/serviceprovider/individual")
-
-        except Exception as e:
-            _logger.error("Error occurred%s" % e)
-            return request.render(
-                "g2p_service_provider_benificiary_management.error_template",
-                {"error_message": "An error occurred. Please try again later."},
-            )
-
-    @http.route(
-        ["/serviceprovider/individual/update/<int:_id>"],
-        type="http",
-        auth="user",
-        website=True,
-        csrf=False,
-    )
-    def indvidual_update(self, _id, **kw):
-        try:
-            gender = request.env["gender.type"].sudo().search([])
-            beneficiary = request.env["res.partner"].sudo().browse(_id)
-            if not beneficiary:
-                return request.render(
-                    "g2p_service_provider_benificiary_management.error_template",
-                    {"error_message": "Beneficiary not found."},
-                )
-
-            return request.render(
-                "g2p_service_provider_benificiary_management.individual_update_form_template",
-                {
-                    "beneficiary": beneficiary,
-                    "gender": gender,
-                },
-            )
-        except Exception:
-            return request.render(
-                "g2p_service_provider_benificiary_management.error_template",
-                {"error_message": "Invalid URL."},
-            )
-
-    @http.route(
-        "/serviceprovider/individual/update/submit",
-        type="http",
-        auth="user",
-        website=True,
-        csrf=False,
-    )
-    def update_individual_submit(self, **kw):
-        try:
-            member = request.env["res.partner"].sudo().browse(int(kw.get("group_id")))
-            if member:
-                name = ""
-                if kw.get("family_name"):
-                    name += kw.get("family_name") + ", "
-                if kw.get("given_name"):
-                    name += kw.get("given_name") + " "
-                if kw.get("addl_name"):
-                    name += kw.get("addl_name") + " "
-                if kw.get("birthdate") == "":
-                    birthdate = False
-                else:
-                    birthdate = kw.get("birthdate")
-
-                member.sudo().write(
-                    {
-                        "given_name": kw.get("given_name"),
-                        "addl_name": kw.get("addl_name"),
-                        "family_name": kw.get("family_name"),
-                        "name": name,
-                        "birthdate": birthdate,
-                        "gender": kw.get("gender"),
-                        "email": kw.get("email"),
-                    }
-                )
-            return request.redirect("/serviceprovider/individual")
-
-        except Exception as e:
-            _logger.error("Error occurred%s" % e)
-            return request.render(
-                "g2p_service_provider_benificiary_management.error_template",
-                {"error_message": "An error occurred. Please try again later."},
-            )
